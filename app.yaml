@@ -1,0 +1,29 @@
+application: d3-sample
+version: 1
+runtime: python27
+api_version: 1
+threadsafe: yes
+
+handlers:
+# favicon
+- url: /server/favicon\.ico
+  static_files: favicon.ico
+  upload: server/favicon\.ico
+
+# top-page
+- url: /$
+  static_files: client/html/index.html
+  upload: client/.*
+
+# other files
+- url: /(.+\..+)$
+  static_files: client/\1
+  upload: client/.*
+
+# script
+- url: .*
+  script: main.app
+
+libraries:
+- name: webapp2
+  version: latest
