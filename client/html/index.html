@@ -2,9 +2,16 @@
 <html>
 
 <head>
-    <title>Backbone View Example</title>
+    <title>Backbone d3 Example</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.2/css/bootstrap.css" rel="stylesheet">
+    <link rel="shortcut icon" href="../img/favicon.ico"/>
+    <style>
+        body {
+            padding-top: 60px;
+        }
+    </style>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.2/css/bootstrap.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.2/css/bootstrap-responsive.css" rel="stylesheet">
     <link href="../css/main.css" rel="stylesheet">
 </head>
 
@@ -12,44 +19,77 @@
 <div class="navbar navbar-inverse navbar-fixed-top">
     <div class="navbar-inner">
         <div class="container">
-            <a class="brand" href="./">Backbone Memo Application</a>
+            <a class="brand" href="./">d3-sample</a>
         </div>
     </div>
 </div>
 
 <div id="main" class="container">
-    <h2>Memo</h2>
+    <!--タブの表示-->
+    <ul class="nav nav-tabs nav-justfied">
+        <!--<ul class="nav nav-pills">-->
+        <li class="active"><a href="#menu1" data-toggle="tab">list</a></li>
+        <li><a href="#menu2" data-toggle="tab">Graph</a></li>
+    </ul>
 
-    <form id="addForm" class="form">
-        <input type="text" name="title" class="input-block-level" placeholder="タイトル"/>
-        <textarea rows="5" name="content" class="input-block-level" placeholder="コンテナ"></textarea>
-        <a href="#" id="addBtn" class="btn btn-primary">Add</a>
-    </form>
-
-    <div id="memoList" class="row-fluid">
+    <!--タブの内容-->
+    <div class="tab-content">
+        <div class="tab-pane fade in active" id="menu1">
+            <form id="addForm" class="form">
+                <input col type="text" name="item" class="input-block-level" placeholder="項目名"/>
+                <input type="number" name="val" min="0" max="9999.99" class="input-block-level" placeholder="値"/>
+                <a href="#" id="addBtn" class="btn btn-primary">Add</a>
+            </form>
+            <div class="container">
+                <table class="table table-striped table-condensed table-responsive table-bordered">
+                    <tr><th><div class="text-center">項目名</div></th><th><div class="text-center">値</div></th><th width="120px"><div class="text-center">操作</div></th></tr>
+                    <tr><td>項目名1</td><td><div class="text-right">¥100.12</div></td><td><a href="#" id="editBtn1" class="btn btn-link">Edit</a><a href="#" id="delBtn1" class="btn btn-link">Delete</a></td></tr>
+                    <tr><td>項目名2</td><td><div class="text-right">¥130.12</div></td><td><a href="#" id="editBtn2" class="btn btn-link">Edit</a><a href="#" id="delBtn2" class="btn btn-link">Delete</a></td></tr>
+                    <tr><td>項目名3</td><td><div class="text-right">¥2100.32</div></td><td><a href="#" id="editBtn3" class="btn btn-link">Edit</a><a href="#" id="delBtn3" class="btn btn-link">Delete</a></td></tr>
+                    <tr><td>項目名4</td><td><div class="text-right">¥25154.00</div></td><td><a href="#" id="editBtn4" class="btn btn-link">Edit</a><a href="#" id="delBtn4" class="btn btn-link">Delete</a></td></tr>
+                    <tr><td>項目名5</td><td><div class="text-right">¥555.00</div></td><td><a href="#" id="editBtn5" class="btn btn-link">Edit</a><a href="#" id="delBtn5" class="btn btn-link">Delete</a></td></tr>
+                    <tr><td>項目名6</td><td><div class="text-right">¥95212</div></td><td><a href="#" id="editBtn6" class="btn btn-link">Edit</a><a href="#" id="delBtn6" class="btn btn-link">Delete</a></td></tr>
+                </table>
+        </div>
+        </div>
+        <div class="tab-pane fade" id="menu2">
+            <div id="result"></div>
+        </div>
     </div>
-</div>
-<div>複数タブー追加可能なグリッド＋グラフ　backbone,underscore,d3,bootstrap,Marionette利用</div>
-<ul>
-    <li>ヘッダ作成</li>
-    <li>フッタ作成</li>
-    <li>ボディ部作成</li>
-    <li>タブ作成</li>
-    <li>グリッド作成</li>
-    <li>追加削除</li>
-    <li>グラフ作成</li>
-    <li>グラフ選択可能</li>
-</ul>
 
-<script type="text/template" id="tmpl-itemview">
-    <h3><%= title %></h3>
-    <p><%= content %></p>
-    <p><a href="#" class="delete">delete</a></p>
-</script>
+    <!--<form id="addForm" class="form">-->
+    <!--<input type="text" name="title" class="input-block-level" placeholder="タイトル"/>-->
+    <!--<textarea rows="5" name="content" class="input-block-level" placeholder="コンテナ"></textarea>-->
+    <!--<a href="#" id="addBtn" class="btn btn-primary">Add</a>-->
+    <!--</form>-->
 
-<!--scrpit load-->
-<script src="../js/require_config.js"></script>
-<script data-main="../js/main.js" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.16/require.js"></script>
+    <!--<div id="memoList" class="row-fluid">-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--<div>複数タブー追加可能なグリッド＋グラフ　backbone,underscore,d3,bootstrap,Marionette利用</div>-->
+    <!--<ul>-->
+    <!--<li>ヘッダ作成</li>-->
+    <!--<li>フッタ作成</li>-->
+    <!--<li>ボディ部作成</li>-->
+    <!--<li>タブ作成</li>-->
+    <!--<li>グリッド作成</li>-->
+    <!--<li>追加削除</li>-->
+    <!--<li>グラフ作成</li>-->
+    <!--<li>グラフ選択可能</li>-->
+    <!--</ul>-->
+
+    <script type="text/template" id="tmpl-itemview">
+        <p><%= title %></p>
+        <p><%= value %></p>
+        <p><a href="#" class="edit">edit</a></p>
+        <p><a href="#" class="delete">delete</a></p>
+    </script>
+
+    <!--scrpit load-->
+    <script src="../js/require_config.js"></script>
+    <script data-main="../js/main.js"
+            src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.16/require.js">
+    </script>
 
 </body>
 </html>

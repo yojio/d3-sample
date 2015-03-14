@@ -1,14 +1,14 @@
 /*WEBフォントはサイズが大きくて遅い。。*/
-@import url(http://fonts.googleapis.com/earlyaccess/notosansjapanese.css);
+/*@import url(http://fonts.googleapis.com/earlyaccess/notosansjapanese.css);*/
 
-body *{
-  font-family: 'Noto Sans Japanese', sans-serif;
-}
-h1,h2{
-  font-family: 'Noto Sans Japanese', sans-serif;
-  font-weight: 900;
-}
-h3,h4,h5{
-  font-family: 'Noto Sans Japanese', sans-serif;
-  font-weight: 700;
-}
+/*body *{*/
+  /*font-family: 'Noto Sans Japanese', sans-serif;*/
+/*}*/
+/*h1,h2{*/
+  /*font-family: 'Noto Sans Japanese', sans-serif;*/
+  /*font-weight: 900;*/
+/*}*/
+/*h3,h4,h5{*/
+  /*font-family: 'Noto Sans Japanese', sans-serif;*/
+  /*font-weight: 700;*/
+/*}*/
