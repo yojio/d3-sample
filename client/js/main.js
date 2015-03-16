@@ -2,7 +2,7 @@
  * Created by yoji on 15/03/09.
  */
 define(
-		[ 'bootstrap', 'underscore', 'backbone', 'd3' ],
+		[ 'bootstrap', 'underscore', 'backbone', 'd3','chart' ],
 		function(bootstrap, _, backbone, d3) {
 
 			me = this;
@@ -22,6 +22,19 @@ define(
 					[ "項目2", "2", "#8a89a6" ], [ "項目3", "30", "#7b6888" ],
 					[ "項目4", "20", "#6b486b" ], [ "項目5", "20", "#a05d56" ] ];
 
+            var pie = new PieChart({
+                dom:"#result"
+                ,title:{
+                  caption:"テスト"
+                }
+                ,width:400
+                ,height:400
+            });
+
+            pie.create(list1);
+            //pie.redraw(list2);
+      return;
+
 			// tab-change
 			$('a[data-toggle="tab"]').on('shown.bs.tab', function(e) {
 				var activated_tab = e.target; // activated tab
@@ -38,6 +51,7 @@ define(
 			$("#data2").on("click", function() {
 				refreshPieChart(list2)
 			});
+
 
 			function createPieChart(data) {
 				// 処理,,,,,
