@@ -42,42 +42,52 @@ Chart.prototype.redraw = function (data) {
 // 円グラフ
 function PieChart(option) {
 
+  var me = this;
+
   Chart.call(this, option);
 
   // グラフ作成
   this.create = function (data) {
 
-    var radius = Math.min(this.opt.width, this.opt.height) / 2;
+     me.current = new Array(data.length);;
+
+    // 半径算出
+    var radius = Math.min(me.opt.width, me.opt.height) / 2;
 
     // 円グラフのサイズを指定
     var arc = d3.svg.arc().innerRadius(radius / 4).outerRadius(radius - 10);
+
     // 円グラフを生成
     var pie = d3.layout.pie().sort(null).value(function (d) {
       return d[1];
     });
+
     // 領域のリセット
-    $(this.dom).empty();
-    // 色の用意 TODO 色はパラメータでもらう
-    var color = d3.scale.category20();
+    $(me.dom).empty();
+
+    // 色の用意
+    // var color = d3.scale.category20();
     // SVGの表示領域を生成
-    var height = (this.opt.title.caption) ? height += this.opt.title.height : this.opt.height;
+    var height = (me.opt.title.caption) ? height = me.opt.height + me.opt.title.height : me.opt.height;
 
     // 規定オブジェクト生成
     var svg = d3
-        .select(this.opt.dom)
+        .select(me.opt.dom)
         .append("svg")
-        .attr("width", this.opt.width)
+        .attr("width", me.opt.width)
         .attr("height", height);
 
     // タイトル描画
-    if (this.opt.title.caption) {
+    if (me.opt.title.caption) {
       svg.append("text")
-          .attr("x", (this.opt.width / 2))
-          .attr("y", this.opt.title.height)
+          .attr("class","title")
+          .attr("type","caption")
+          .attr("x", (me.opt.width / 2))
+          .attr("y", me.opt.title.height)
           .attr("text-anchor", "middle")
-          .style("font-size", this.opt.title.fontSize + "px")
-        // .style("text-decoration", "underline")
-          .text(this.opt.title.caption);
+          .style("font-size", me.opt.title.fontSize + "px")
+          .style("text-decoration", "underline")
+          .text(me.opt.title.caption);
     }
 
     // 円グラフを描画
@@ -88,32 +98,72 @@ function PieChart(option) {
         .attr("stroke", "white") // 円グラフの区切り線を白色にする
         .attr(
         "transform",
-        "translate(" + this.opt.width / 2 + ", " + ((height / 2) + 20) + ")") // 円グラフをSVG領域の中心にする
+        "translate(" + me.opt.width / 2 + ", " + ((height / 2) + 20) + ")") // 円グラフをSVG領域の中心にする
         .style("fill", function (d, i) {
-          // return d.data[2];
-          return color(i);
+          return d.data[2];
+          // return color(i);
         })
       // 今の数値を保存します。
         .each(function (d, i) {
-          //me._current[i] = d;
+          me.current[i] = d;
         });
 
     // データキャプション表示
     g.append("text")
+        .attr("class","dataCaption")
         .attr("transform", function (d) {
           return "translate(" + arc.centroid(d) + ")";
         })
-        .attr("dx", this.opt.width / 2)
+        .attr("dx", me.opt.width / 2)
         .attr("dy", (height / 2) + 20)
         .style("text-anchor", "middle").text(function (d) {
           return d.data[0];
         });
 
-    // アニメーション http://tukumemo.com/d3-pie-chart/
+    me.svg = svg;
+    me.arc = arc;
+    me.pie = pie;
+
   }
 
   this.redraw = function (data) {
-    alert("ccc");
+
+    var svg = me.svg;
+    var pie = me.pie;
+    var arc = me.arc;
+
+    // path
+    svg.selectAll("path")
+    .data(pie(data))
+    .transition() // トランジションを設定するとアニメーションさせることができます。
+    .duration(800) // アニメーションの秒数を設定します。
+    .attrTween("d", function(d,i) { // アニメーションの間の数値を補完します。
+      var interpolate = d3.interpolate(me.current[i], d);
+      me.current[i] = interpolate(0);
+      return function(t) {
+        return arc(interpolate(t));
+      };
+    });
+
+    // キャプション
+    svg.selectAll(".dataCaption")
+    .data(pie(data)) // 新しいデータを設定します。
+    .text(function(d, i) { // 文字を更新します。
+      return d.data[0];
+    })
+    .transition() // トランジションを設定。
+    .duration(800) // アニメーションの秒数を設定。
+    .attrTween( // アニメーションの間の数値を補完。
+        "transform",
+        function(d,i) {
+          var interpolate = d3.interpolate(arc
+              .centroid(me.current[i]), arc
+              .centroid(d));
+          me.current[i] = d;
+          return function(t) {
+            return "translate(" + interpolate(t) + ")";
+          };
+        });
   };
 };
 
