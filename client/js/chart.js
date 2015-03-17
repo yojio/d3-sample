@@ -3,15 +3,12 @@
  */
 var DEF_OPT = {
   dom : "" // 表示用DIV
-  ,
-  width : 100 // サイズ横
-  ,
-  height : 100 // サイズ縦
-  ,
-  title : { // タイトル情報
-    caption : "",
-    height : 20,
-    fontSize : 16
+  ,width : 100 // サイズ横
+  ,height : 100 // サイズ縦
+  ,title : { // タイトル情報
+    caption : ""
+    ,height : 20
+    ,fontSize : 16
   }
 };
 
@@ -77,6 +74,7 @@ PieChart.prototype = Object.create(Chart.prototype, {
       // 領域のリセット
       $(me.dom).empty();
 
+
       // 色の用意
       // var color = d3.scale.category20();
       // SVGの表示領域を生成
@@ -84,8 +82,7 @@ PieChart.prototype = Object.create(Chart.prototype, {
           + me.opt.title.height : me.opt.height;
 
       // 規定オブジェクト生成
-      var svg = d3.select(me.opt.dom).append("svg").attr("width", me.opt.width)
-          .attr("height", height);
+      var svg = d3.select(me.opt.dom).append("svg").attr("width", me.opt.width).attr("height", height);
 
       // タイトル描画
       if (me.opt.title.caption) {
@@ -98,6 +95,36 @@ PieChart.prototype = Object.create(Chart.prototype, {
 
       // 円グラフを描画
       var g = svg.selectAll("path").data(pie(data)).enter().append("g");
+
+      g.on("mouseover", function(d) {
+        if (tooltip.style.visibility == "visible") {
+            return;
+        }
+        tooltip.style.visibility = "visible";
+        if (me.flg == true){
+          return;
+        }
+        me.flg = true;
+        $("#tooltip").fadeIn("slow",function(){me.flg = false});
+
+      }).on("mousemove", function(d) {
+
+        if ((!d) || (!d.data[0])){
+          return
+        }
+        tooltip.textContent = d.data[0];
+        tooltip.style.top = (event.pageY - 20) + "px";
+        tooltip.style.left = (event.pageX - 10) + "px";
+
+      }).on("mouseout", function(d) {
+        if (me.flg == true){
+          return;
+        }
+        $("#tooltip").fadeOut("slow",function(){
+          me.flg = false;
+          tooltip.style.visibility = "hidden";
+        });
+      });
 
       g.append("path") // 円弧はパスで指定する
       .attr("d", arc) // 円弧を設定
