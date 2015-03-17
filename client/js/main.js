@@ -40,7 +40,8 @@ define([ 'bootstrap', 'underscore', 'backbone', 'd3', 'chart' ],
             caption : caption
           },
           width : 200,
-          height : 200
+          height : 200,
+          sorted : false
         });
 
       }

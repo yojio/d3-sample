@@ -9,6 +9,7 @@ var DEF_OPT = {
     caption : ""
     ,height : 20
     ,fontSize : 16
+    ,sorted : false
   }
 };
 
@@ -58,6 +59,7 @@ PieChart.prototype = Object.create(Chart.prototype, {
 
       var me = this;
 
+      me.flg = 0;
       me.current = new Array(data.length);
 
       // 半径算出
@@ -67,7 +69,13 @@ PieChart.prototype = Object.create(Chart.prototype, {
       var arc = d3.svg.arc().innerRadius(radius / 4).outerRadius(radius - 10);
 
       // 円グラフを生成
-      var pie = d3.layout.pie().sort(null).value(function(d) {
+      comparator = null;
+      if (me.opt.sorted){
+        comparator =  function(a, b) {
+          return d3.descending(a[0], b[0]);
+        }
+      }
+      var pie = d3.layout.pie().sort(comparator).value(function(d) {
         return d[1];
       });
 
@@ -101,10 +109,12 @@ PieChart.prototype = Object.create(Chart.prototype, {
             return;
         }
         tooltip.style.visibility = "visible";
-        if (me.flg == true){
+        me.flg += 1;
+
+        if (me.flg > 1){
           return;
         }
-        me.flg = true;
+
         $("#tooltip").fadeIn("slow",function(){me.flg = false});
 
       }).on("mousemove", function(d) {
@@ -117,11 +127,11 @@ PieChart.prototype = Object.create(Chart.prototype, {
         tooltip.style.left = (event.pageX - 10) + "px";
 
       }).on("mouseout", function(d) {
-        if (me.flg == true){
+        if (me.flg > 1){
           return;
         }
         $("#tooltip").fadeOut("slow",function(){
-          me.flg = false;
+          me.flg -= 1;
           tooltip.style.visibility = "hidden";
         });
       });
