@@ -40,7 +40,14 @@ define([ 'bootstrap', 'underscore', 'backbone', 'd3', 'chart' ],
       });
 
       $("#dataChange").on("click", function() {
-        drawChart(list,list_Line);
+        var cnt = 0;
+        var timer = setInterval(function(){
+            drawChart(list,list_Line);
+            cnt += 1;
+            if (cnt > 100){
+              clearInterval(timer);
+            }
+          },1000);
       });
 
       function createChartObject(dom, caption, chartType) {
