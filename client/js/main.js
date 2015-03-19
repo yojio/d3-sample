@@ -105,13 +105,13 @@ define([ 'bootstrap', 'underscore', 'backbone', 'chart/chart' ], function(
       }
 
     if (chartType == 0) {
-      return new ChartCreator().pieChart(option);
+      return new PieChart(option);
     } else if (chartType == 0) {
-      return new ChartCreator().horizontalBarChart(option);
+      return new HolizontalBarChart(option);
     } else if (chartType == 2) {
-      return new ChartCreator().lineChart(option);
+      return new LineChart(option);
     } else {
-      return new ChartCreator().lineChart(option);
+      return new LineChart(option);
     }
   }
 
