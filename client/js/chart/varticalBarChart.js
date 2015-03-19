@@ -1,10 +1,10 @@
 define(
     ['chart/chart'], function () {
-      this.LineChart = function LineChart(option) {
+      this.VarticalBarChart = function VarticalBarChart(option) {
         Chart.call(this, option);
       }
 
-      LineChart.prototype = Object.create(Chart.prototype, {
+      VarticalBarChart.prototype = Object.create(Chart.prototype, {
         constructor: {
           value: PieChart,
           enumerable: false,
