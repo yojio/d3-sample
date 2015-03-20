@@ -6,7 +6,7 @@ define(
 
       HolizontalBarChart.prototype = Object.create(Chart.prototype, {
         constructor: {
-          value: PieChart,
+          value: HolizontalBarChart,
           enumerable: false,
           writable: true,
           configurable: true

@@ -2,10 +2,11 @@
  * Created by yoji on 15/03/09.
  */
 define(['bootstrap', 'underscore', 'backbone',
-      'chart/pieChart', 'chart/horizontalBarChart', 'chart/varticalBarChart', 'chart/lineChart',
+        'chart/pieChart', 'chart/horizontalBarChart', 'chart/varticalBarChart', 'chart/lineChart',
       'sample'],
     function (bootstrap, _, backbone) {
 
+      var maxRange = 1000;
       var me = this;
 
       // event define
@@ -25,7 +26,7 @@ define(['bootstrap', 'underscore', 'backbone',
         drawChart(Sample.DATA, Sample.LINE_DATA, Sample.LINE_DATA_MULTI);
 
         var timer = setInterval(function () {
-          drawChart(list, list_Line);
+          drawChart(Sample.DATA, Sample.LINE_DATA, Sample.LINE_DATA_MULTI);
           cnt += 1;
           if (cnt > 100) {
             clearInterval(timer);
@@ -59,48 +60,51 @@ define(['bootstrap', 'underscore', 'backbone',
           title: {
             caption: caption
           },
-          width: 200,
-          height: 200,
+          width: 350,
+          height: 300,
           sorted: false,
-          axisStyle: {
-            width: 32,
+          axis: {
+            xwidth: 32,
+            ywidth: 50,
             maxValue: 200
           }
         }
 
-        if (chartType == 0) {
-          return new PieChart(option);
-        } else if (chartType == 0) {
-          return new HolizontalBarChart(option);
-        } else if (chartType == 2) {
-          return new LineChart(option);
-        } else {
-          return new LineChart(option);
-        }
+        return new LineChart(option);
+//        if (chartType == 0) {
+//          return new PieChart(option);
+//        } else if (chartType == 0) {
+//          return new HolizontalBarChart(option);
+//        } else if (chartType == 2) {
+//          return new LineChart(option);
+//        } else {
+//          return new LineChart(option);
+//        }
       }
 
       function drawChart(data, lineData, lineDataMulti) {
         // 処理,,,,,
         var list;
         for (var i = 0; i < me.chartArray.length; i++) {
-          if (i % 4 == 0) {
-            me.chartArray[i].draw(changeData(data));
-            if (i + 1 < me.chartArray.length) {
-              me.chartArray[i + 1].draw(changeData(data));
-            }
-            if (i + 2 < me.chartArray.length) {
-              me.chartArray[i + 2].draw(changeDataForLine(lineData));
-            }
-            if (i + 3 < me.chartArray.length) {
-              me.chartArray[i + 3].draw(changeDataForLine(lineDataMulti));
-            }
-          }
+        me.chartArray[i].draw(changeDataForLine(lineDataMulti));
+//          if (i % 4 == 0) {
+//            me.chartArray[i].draw(changeData(data));
+//            if (i + 1 < me.chartArray.length) {
+//              me.chartArray[i + 1].draw(changeData(data));
+//            }
+//            if (i + 2 < me.chartArray.length) {
+//              me.chartArray[i + 2].draw(changeDataForLine(lineData));
+//            }
+//            if (i + 3 < me.chartArray.length) {
+//              me.chartArray[i + 3].draw(changeDataForLine(lineDataMulti));
+//            }
+//          }
         }
       }
 
       function changeData(data) {
         for (var i = 0; i < data.length; i++) {
-          data[i].value = getRandomInt(0, 200);
+          data[i].value = getRandomInt(0, maxRange);
         }
         return data;
       }
@@ -108,7 +112,7 @@ define(['bootstrap', 'underscore', 'backbone',
       function changeDataForLine(lineData) {
         for (var i = 0; i < lineData.data.length; i++) {
           for (var k = 0; k < lineData.data[i].length; k++) {
-            lineData.data[i][k] = getRandomInt(0, 200);
+            lineData.data[i][k] = getRandomInt(0, maxRange);
           }
         }
         return lineData;

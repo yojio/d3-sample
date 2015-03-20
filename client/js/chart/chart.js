@@ -9,30 +9,36 @@ function Chart(option) {
     dom : "", // 表示用DIV
     width : 100, // サイズ横
     height : 100, // サイズ縦
+    stroke : {
+      width : 2, // 枠線の太さ
+      type  : 1
+    },
     title : { // タイトル情報
       caption : "",
       height : 20,
       fontSize : 16,
+      margin : 4,
       sorted : false
     },
-    axisStyle : {
-      width : 14,
-      maxValue : 1000,
-      valueTitle : '値',
-      kindTitle : '種類'
+    axis : {
+      max : 1000,
+      xWidth : 14,
+      yWidth : 50,
+      xTitle : '値',
+      yTitle : '種類',
     }
   };
 
-  me = this;
-  me.opt = $.extend(true, {}, DEF_OPT, option);
-  validate();
+  this.opt = $.extend(true, {}, DEF_OPT, option);
+  validate(this.opt);
   this.created = false;
 
-  function validate() {
-    if ((!me.opt.dom) || (me.opt.dom.trim().length == 0)) {
+  function validate(opt) {
+    if ((!opt.dom) || (opt.dom.trim().length == 0)) {
       throw new Error("dom undefined error");
     }
   }
+
 };
 
 // データ定義
@@ -59,19 +65,44 @@ function Chart(option) {
 // 描画
 Chart.prototype.draw = function(data) {
   if (!this.created) {
-    me._create(data);
-    me.created = true;
+    this._create(data);
+    this.created = true;
   } else {
-    me._redraw(data);
+    this._redraw(data);
   }
 };
 
 // 作成
 Chart.prototype._create = function(data) {
-  throw new Error("Create function is not implemented yet.");
+  throw new Error(this.constructor.name
+      + " Create function is not implemented yet.");
 };
 
 // 再描画
 Chart.prototype._redraw = function(data) {
-  throw new Error("Redraw function is not implemented yet.");
+  throw new Error(this.constructor.name
+      + " Redraw function is not implemented yet.");
+};
+
+// タイトル描画(返り値ータイトル高さ）
+Chart.prototype._drawTitle = function(svg, opt, left) {
+
+  if (!opt.title.caption) {
+    return 0;
+  }
+
+  if (!left) {
+    left = opt.width / 2;
+  }
+
+  svg.append("text")
+    .attr("class", "title")
+    .attr("type", "caption")
+    .attr("x",left)
+    .attr("y", opt.title.height)
+    .attr("text-anchor", "middle")
+    .style("font-size", opt.title.fontSize + "px")
+    .style("text-decoration","underline").text(opt.title.caption);
+
+  return opt.title.height + opt.title.margin;
 };

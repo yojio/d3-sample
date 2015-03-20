@@ -6,7 +6,7 @@ define(
 
       VarticalBarChart.prototype = Object.create(Chart.prototype, {
         constructor: {
-          value: PieChart,
+          value: VarticalBarChart,
           enumerable: false,
           writable: true,
           configurable: true
