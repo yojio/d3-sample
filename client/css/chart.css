@@ -1,0 +1,14 @@
+/* Chart */
+.chart-class .axis text {
+    font-family: sans-serif;
+    font-size: 11px;
+}
+
+.chart-class .axis path, .chart-class .axis line {
+    fill: none;
+    stroke: black;
+}
+
+.chart-class .axis .tick line {
+    opacity: 0.2;
+}

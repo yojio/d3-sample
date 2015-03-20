@@ -2,11 +2,10 @@
  * Created by yoji on 15/03/09.
  */
 define(['bootstrap', 'underscore', 'backbone',
-        'chart/pieChart', 'chart/horizontalBarChart', 'chart/varticalBarChart', 'chart/lineChart',
-      'sample'],
+        'sample','chart/pieChart', 'chart/horizontalBarChart', 'chart/varticalBarChart', 'chart/lineChart'],
     function (bootstrap, _, backbone) {
 
-      var maxRange = 1000;
+      var maxRange = 500;
       var me = this;
 
       // event define
@@ -35,7 +34,7 @@ define(['bootstrap', 'underscore', 'backbone',
       });
 
       // サンプルChart
-      me.chartArray = createChart(12);
+      me.chartArray = createChart(15);
 
       function createChart(chartCount) {
 
@@ -46,7 +45,7 @@ define(['bootstrap', 'underscore', 'backbone',
           item = "chart" + i;
           $("#result").append(
               '<div id=\"' + item + '\" style=\"float:left\"></div>');
-          chartArray[i] = createChartObject("#" + item, "サンプルチャート" + index, i % 4);
+          chartArray[i] = createChartObject("#" + item, "サンプルチャート" + index, i % 5);
         }
 
         return chartArray;
@@ -60,59 +59,85 @@ define(['bootstrap', 'underscore', 'backbone',
           title: {
             caption: caption
           },
+          stroke : {
+            width : 2, // 枠線の太さ
+//            type  : Chart.STROKE_TYPE_DASH
+            type  : Chart.STROKE_TYPE_DOT
+          },
           width: 350,
           height: 300,
           sorted: false,
-          axis: {
-            xwidth: 32,
-            ywidth: 50,
-            maxValue: 200
+          // 横
+          axisX : {
+            max : maxRange,
+            width : 14,
+            caption : '値'
+          },
+          // 縦
+          axisY : {
+            max : maxRange,
+            width : 50,
+            title : '種類'
+          },
+          // bar
+          bar : {
+            weight : Chart.BAR_WEIGHT_THICK
           }
-        }
+        };
 
-        return new LineChart(option);
 //        if (chartType == 0) {
 //          return new PieChart(option);
-//        } else if (chartType == 0) {
-//          return new HolizontalBarChart(option);
-//        } else if (chartType == 2) {
-//          return new LineChart(option);
-//        } else {
-//          return new LineChart(option);
-//        }
+//        } else
+        if (chartType == 0) {
+          return new HolizontalBarChart(option);
+        } else if (chartType == 1) {
+          return new VerticalBarChart(option);
+        } else if (chartType == 3) {
+          return new LineChart(option);
+        } else {
+          return new LineChart(option);
+        }
       }
 
       function drawChart(data, lineData, lineDataMulti) {
         // 処理,,,,,
         var list;
         for (var i = 0; i < me.chartArray.length; i++) {
-        me.chartArray[i].draw(changeDataForLine(lineDataMulti));
-//          if (i % 4 == 0) {
-//            me.chartArray[i].draw(changeData(data));
-//            if (i + 1 < me.chartArray.length) {
-//              me.chartArray[i + 1].draw(changeData(data));
-//            }
-//            if (i + 2 < me.chartArray.length) {
-//              me.chartArray[i + 2].draw(changeDataForLine(lineData));
-//            }
-//            if (i + 3 < me.chartArray.length) {
-//              me.chartArray[i + 3].draw(changeDataForLine(lineDataMulti));
-//            }
-//          }
+          var tmpData = changeData(data);
+          var tmpLData = changeDataForLine(lineData);
+          var tmpLDataM = changeDataForLine(lineDataMulti);
+
+          if (i % 5 == 0) {
+            me.chartArray[i].draw(tmpData);
+            if (i + 1 < me.chartArray.length) {
+              me.chartArray[i + 1].draw(tmpData);
+            }
+            if (i + 2 < me.chartArray.length) {
+              me.chartArray[i + 2].draw(tmpLData);
+            }
+            if (i + 3 < me.chartArray.length) {
+              me.chartArray[i + 3].draw(tmpLData);
+            }
+            if (i + 4 < me.chartArray.length) {
+              me.chartArray[i + 4].draw(tmpLDataM);
+            }
+          }
         }
       }
 
       function changeData(data) {
         for (var i = 0; i < data.length; i++) {
           data[i].value = getRandomInt(0, maxRange);
+//          data[i].value = 250;
         }
         return data;
       }
 
       function changeDataForLine(lineData) {
-        for (var i = 0; i < lineData.data.length; i++) {
-          for (var k = 0; k < lineData.data[i].length; k++) {
-            lineData.data[i][k] = getRandomInt(0, maxRange);
+        for (var i = 0; i < lineData.value.length; i++) {
+          for (var k = 0; k < lineData.value[i].length; k++) {
+            lineData.value[i][k] = getRandomInt(0, maxRange);
+//            lineData.value[i][k] = 250;
           }
         }
         return lineData;
