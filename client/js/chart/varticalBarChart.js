@@ -81,6 +81,7 @@ define(['chart/chart'], function () {
         svg.selectAll("rect")   // SVGでの四角形を示す要素を指定
             .data(data) // データを設定
             .transition()
+            .duration(800) // 動作時間ß
             .attr("y", function (d) {
               var value = (height - (d.value * me.barScale));
               return ((value >= 0) ? value : 0) + "px";
@@ -90,12 +91,6 @@ define(['chart/chart'], function () {
               return ((value >= 0) ? value : 0) + "px";
             })
 
-      }
-    },
-    // 高さ取得
-    _getHeight: {
-      value: function _getHeight(opt) {
-        return opt.height - 20; // x軸フォント高さ
       }
     },
     // 縦軸

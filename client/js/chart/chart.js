@@ -10,28 +10,33 @@ define(['jquery', 'd3'], function () {
       dom: "", // 表示用DIV
       width: 100, // サイズ横
       height: 100, // サイズ縦
+      sorted: false,
       // タイトル情報
       title: {
         caption: "",
         height: 20,
         fontSize: 16,
-        margin: 10,
-        sorted: false
+        margin: 10
       },
       // 横
       axisX: {
         max: 1000,
-        caption: '値',
+        caption: '値'
       },
       // 縦
       axisY: {
         max: 1000,
         width: 50,
-        title: '種類',
+        title: '種類'
       },
       // bar
       bar: {
         weight: Chart.BAR_WEIGHT_NORMAL
+      },
+      // pie
+      pie : {
+        frameColor : "white",
+        innerRadiusRate : 1 / 2
       }
     };
 
@@ -132,6 +137,11 @@ define(['jquery', 'd3'], function () {
         .style("text-decoration", "underline").text(opt.title.caption);
 
     return opt.title.height + opt.title.margin;
+  };
+
+  // 高さ取得
+  Chart.prototype._getHeight = function (opt) {
+        return opt.height - 20; // x軸フォント高さ
   };
 });
 

@@ -92,6 +92,8 @@ define(['bootstrap', 'underscore', 'backbone',
           return new HolizontalBarChart(option);
         } else if (chartType == 1) {
           return new VerticalBarChart(option);
+        } else if (chartType == 2) {
+          return new PieChart(option);
         } else if (chartType == 3) {
           return new LineChart(option);
         } else {
@@ -113,7 +115,7 @@ define(['bootstrap', 'underscore', 'backbone',
               me.chartArray[i + 1].draw(tmpData);
             }
             if (i + 2 < me.chartArray.length) {
-              me.chartArray[i + 2].draw(tmpLData);
+              me.chartArray[i + 2].draw(tmpData);
             }
             if (i + 3 < me.chartArray.length) {
               me.chartArray[i + 3].draw(tmpLData);

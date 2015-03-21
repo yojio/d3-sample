@@ -62,7 +62,6 @@ define(['chart/chart'], function () {
 
           me.line[i] = line;
           me.linePath[i] = linePath;
-          me.svg = svg;
         }
       }
     },
@@ -70,19 +69,14 @@ define(['chart/chart'], function () {
       value: function (data) {
 
         var me = this;
-        var svg = me.svg;
 
         for (var i = 0; i < data.value.length; i++) {
-          me.linePath[i].transition().duration(800).attr('d',
-              me.line[i](data.value[i]));
+          me.linePath[i]
+              .transition()
+              .duration(800)
+              .attr('d',me.line[i](data.value[i]));
         }
 
-      }
-    },
-    // 高さ取得
-    _getHeight: {
-      value: function _getHeight(opt) {
-        return opt.height - 20; // x軸フォント高さ
       }
     },
     // 縦軸

@@ -52,16 +52,19 @@ define(['chart/chart'], function () {
             }) // 円グラフの区切り線を白色にする
             .attr("x", me.opt.axisY.width)   // 横棒グラフなのでX座標は0。これはSVG上での座標
             .attr("y", function (d, i) {   // Y座標を配列の順序に応じて計算
-              return top + ((data.length - (i + 1)) * barAreaSize) + ((barAreaSize - barSize) / 2);
+              var value = top + ((data.length - (i + 1)) * barAreaSize) + ((barAreaSize - barSize) / 2);
+              return (value >= 0)?value:0;
             })
             .attr("width", function (d) { // 横幅を配列の内容に応じて計算
-              return ((d.value * me.barScale) - 1) + "px";
+              var value = ((d.value * me.barScale) - 1);
+              return ((value >= 0)?value:0) + "px";
             })
             .attr("height", barSize)   // 棒グラフの高さを指定
             .attr("transform", "translate(8, 0)")
             .style("fill", function (d, i) {
               return d.color;
             });
+
         me.svg = svg;
       }
     },
@@ -75,16 +78,11 @@ define(['chart/chart'], function () {
         svg.selectAll("rect")   // SVGでの四角形を示す要素を指定
             .data(data) // データを設定
             .transition()
+            .duration(800)
             .attr("width", function (d) { // 横幅を配列の内容に応じて計算
               return (d.value * me.barScale) + "px";
             })
 
-      }
-    },
-    // 高さ取得
-    _getHeight: {
-      value: function _getHeight(opt) {
-        return opt.height - 20; // x軸フォント高さ
       }
     },
     // 縦軸
