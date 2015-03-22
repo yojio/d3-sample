@@ -37,6 +37,17 @@ define(['jquery', 'd3'], function () {
       pie : {
         frameColor : "white",
         innerRadiusRate : 1 / 2
+      },
+      // radar
+      radar : {
+        labelFontSize : "15px",
+        max : 5,
+        category : ['category1',
+                    'category2',
+                    'category3',
+                    'category4',
+                    'category5',
+                    'category6']
       }
     };
 

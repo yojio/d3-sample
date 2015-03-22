@@ -26,59 +26,28 @@ define(['chart/chart'], function () {
         var svg = d3.select(me.opt.dom).append("svg").attr("width", me.opt.width).attr("height", me.opt.height);
 
         // グラフ出力サイズ（タイトル・縦ラベル幅を除外）
-        var top = me._drawTitle(svg, me.opt);
-        var width = me.opt.width - 100;
-        var left = 50;
+        var top = me._drawTitle(svg, me.opt) + 30;
+        var width = me.opt.width;
         var height = this._getHeight(me.opt);
-
-        var dataset = [
-          [5, 5, 2, 5, 5],
-          [2, 1, 5, 2, 5]
-        ];
-
-        var paramCount = dataset[0].length; // 頂点数
-        var max = d3.max(d3.merge(dataset)); // データ最大
-
-        var grid = [];
-        for (var i = 1; i <= 5; i++) {
-          grid.push([i, i, i, i, i]);
+        var radius = (height - top - 20) / 2;
+        if (width < (height - top - 20)) {
+          radius = width / 2;
         }
+        var left = (width / 2) - radius;
 
-        // label
-        var label = [
-          {
-            position: max + 1
-            , caption: 'ラベル1'
-          },
-          {
-            position: max + 1
-            , caption: 'ラベル2'
-          },
-          {
-            position: max + 1
-            , caption: 'ラベル3'
-          },
-          {
-            position: max + 1
-            , caption: 'ラベル4'
-          },
-          {
-            position: max + 1
-            , caption: 'ラベル5'
-          }
-        ];
+        var paramCount = me.opt.radar.category.length; // 頂点数
+        var max = me.opt.radar.max; // データ最大
 
-        var padding = 30;
         var rScale = d3.scale.linear() // スケールを設定
             .domain([0, max]) // 元のサイズ
-            .range([0, width / 2 - padding]);
+            .range([0, radius]);
 
         var line = d3.svg.line()
             .x(function (d, i) {
-              return left + rScale(d) * Math.cos(2 * Math.PI / paramCount * i - (Math.PI / 2)) + width / 2;
+              return left + rScale(d) * Math.cos(2 * Math.PI / paramCount * i - (Math.PI / 2)) + radius;
             })
             .y(function (d, i) {
-              return top + rScale(d) * Math.sin(2 * Math.PI / paramCount * i - (Math.PI / 2)) + width / 2;
+              return top + rScale(d) * Math.sin(2 * Math.PI / paramCount * i - (Math.PI / 2)) + radius;
             })
             .interpolate('linear');
 
@@ -86,17 +55,57 @@ define(['chart/chart'], function () {
 
         // データ描画
         me.linePath = svg.selectAll('path')
-            .data(dataset)
+            .data(data)
             .enter()
             .append('path')
             .attr('d', function (d) {
-              return line(d) + "z"
+              return line(d.value) + "z"
             })
             .attr("stroke", function (d, i) {
-              return d3.scale.category10().range()[i];
+              return d.color;
             })
-            .attr("stroke-width", 2)
+            .attr("stroke-width", function (d, i) {
+              return d.width;
+            })
+            .attr("stroke-dasharray", function (d, i) {
+              return d.type;
+            })
             .attr('fill', 'none');
+
+        // grid生成
+        me._createGrid(svg, line, left, top, paramCount, max, radius, rScale);
+
+      }
+    },
+    _redraw: {
+      value: function (data) {
+
+        var me = this;
+        var line = me.line;
+
+        me.linePath
+            .data(data)
+            .transition()
+            .duration(800)
+            .attr('d', function (d) {
+              return line(d.value) + "z"
+            })
+
+      }
+    },
+    _createGrid: {
+      value: function (svg, line, left, top, paramCount, max, radius, rScale) {
+
+        var me = this;
+
+        var grid = [];
+        for (var i = 1; i <= max; i++) {
+          var arr = [];
+          for (var k = 1; k <= paramCount; k++) {
+            arr.push(i);
+          }
+          grid.push(arr);
+        }
 
         // グリッド描画
         svg.selectAll("path.grid")
@@ -113,62 +122,48 @@ define(['chart/chart'], function () {
         // グリッド描画
         for (var x = 0; x < paramCount; x++) {
           svg.append("line")
-              .data([5])
+              .data([max])
               .attr("x1", function (d, i) {
-                return left + width / 2;
-              })
-              .attr("y1", function (d, i) {
-                return top + width / 2;
-              })
-              .attr("x2", function (d, i) {
-                return left + rScale(d) * Math.cos(2 * Math.PI / paramCount * x - (Math.PI / 2)) + width / 2;
-              })
-              .attr("y2", function (d, i) {
-                return top + rScale(d) * Math.sin(2 * Math.PI / paramCount * x - (Math.PI / 2)) + width / 2;
+                return left + radius;
+              }).attr("y1", function (d, i) {
+                return top + radius;
+              }).attr("x2", function (d, i) {
+                return left + rScale(d) * Math.cos(2 * Math.PI / paramCount * x - (Math.PI / 2)) + radius;
+              }).attr("y2", function (d, i) {
+                return top + rScale(d) * Math.sin(2 * Math.PI / paramCount * x - (Math.PI / 2)) + radius;
               })
               .attr("stroke-width", 0.5)
               .attr("stroke", "black")
               .attr("stroke-dasharray", "2");
         }
 
+        // ラベル描画
+        me._createGridLabel(svg, left, top, paramCount, max, radius, rScale);
+      }
+    },
+    _createGridLabel: {
+      value: function (svg, left, top, paramCount, max, radius, rScale) {
+
+        var me = this;
+        var labelPosition = max + 1;
+
         svg.selectAll(".dataCaption")
             .attr("class", "dataCaption")
-            .data(label)
+            .data(me.opt.radar.category)
             .enter()
             .append('text')
             .text(function (d, i) {
-              return d.caption;
+              return d;
             })
             .attr("text-anchor", "middle")
             .attr("dominant-baseline", "middle")
             .attr('x', function (d, i) {
-              return left + rScale(d.position) * Math.cos(2 * Math.PI / paramCount * i - (Math.PI / 2)) + width / 2;
+              return left + rScale(labelPosition) * Math.cos(2 * Math.PI / paramCount * i - (Math.PI / 2)) + radius;
             })
             .attr('y', function (d, i) {
-              return top + rScale(d.position) * Math.sin(2 * Math.PI / paramCount * i - (Math.PI / 2)) + width / 2;
+              return top + rScale(labelPosition) * Math.sin(2 * Math.PI / paramCount * i - (Math.PI / 2)) + radius;
             })
-            .attr("font-size", "15px");
-
-      }
-    },
-    _redraw: {
-      value: function (data) {
-
-        var me = this;
-        var line = me.line;
-
-        var dataset = [
-          [2, 4, 5, 1, 3],
-          [3, 5, 1, 4, 2]
-        ];
-
-        me.linePath
-            .data(dataset)
-            .transition()
-            .duration(800)
-            .attr('d', function (d) {
-              return line(d) + "z"
-            })
+            .attr("font-size", me.opt.radar.labelFontSize);
 
       }
     }

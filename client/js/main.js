@@ -111,6 +111,7 @@ define(['bootstrap', 'underscore', 'backbone',
           var tmpData = changeData(data);
           var tmpLData = changeDataForLine(lineData);
           var tmpLDataM = changeDataForLine(lineDataMulti);
+          var tmpRData = changeDataForRadar(Sample.RADAR_DATA);
 
           if (i % 6 == 0) {
             me.chartArray[i].draw(tmpData);
@@ -127,7 +128,7 @@ define(['bootstrap', 'underscore', 'backbone',
               me.chartArray[i + 4].draw(tmpLDataM);
             }
             if (i + 5 < me.chartArray.length) {
-              me.chartArray[i + 5].draw(tmpLDataM);
+              me.chartArray[i + 5].draw(tmpRData);
             }
           }
         }
@@ -149,6 +150,15 @@ define(['bootstrap', 'underscore', 'backbone',
           }
         }
         return lineData;
+      }
+
+      function changeDataForRadar(radarData) {
+        for (var i = 0; i < radarData.length; i++) {
+          for (var k = 0; k < radarData[i].value.length; k++) {
+            radarData[i].value[k] = getRandomInt(0, 5);
+          }
+        }
+        return radarData;
       }
 
       function getRandomInt(min, max) {

@@ -3,7 +3,7 @@ define(['chart/pieChart', 'chart/horizontalBarChart', 'chart/varticalBarChart', 
 
       this.Sample = function Sample() {
 
-      }
+      };
 
 // pieChart,barChartサンプルデータ
       Sample.DATA = [{
@@ -60,5 +60,21 @@ define(['chart/pieChart', 'chart/horizontalBarChart', 'chart/varticalBarChart', 
           [100, 20, 30, 50, 60],
           [100, 20, 30, 50, 60]
         ]
-      }
+      };
+
+// radaChartサンプルデータ
+      Sample.RADAR_DATA = [
+        {
+          width: 2,
+          type: Chart.STROKE_TYPE_DASH,
+          color: "#a05d56",
+          value: [2, 3, 2, 1, 4]
+        },
+        {
+          width: 2,
+          type: Chart.STROKE_TYPE_SOLID,
+          color: "blue",
+          value: [5, 4, 1, 2, 2]
+        }
+      ];
     });
