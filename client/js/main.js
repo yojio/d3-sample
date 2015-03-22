@@ -2,7 +2,8 @@
  * Created by yoji on 15/03/09.
  */
 define(['bootstrap', 'underscore', 'backbone',
-        'sample','chart/pieChart', 'chart/horizontalBarChart', 'chart/varticalBarChart', 'chart/lineChart'],
+        'sample','chart/pieChart', 'chart/horizontalBarChart',
+        'chart/varticalBarChart', 'chart/lineChart', 'chart/radarChart'],
     function (bootstrap, _, backbone) {
 
       var maxRange = 500;
@@ -34,7 +35,7 @@ define(['bootstrap', 'underscore', 'backbone',
       });
 
       // サンプルChart
-      me.chartArray = createChart(15);
+      me.chartArray = createChart(6);
 
       function createChart(chartCount) {
 
@@ -45,7 +46,7 @@ define(['bootstrap', 'underscore', 'backbone',
           item = "chart" + i;
           $("#result").append(
               '<div id=\"' + item + '\" style=\"float:left\"></div>');
-          chartArray[i] = createChartObject("#" + item, "サンプルチャート" + index, i % 5);
+          chartArray[i] = createChartObject("#" + item, "サンプルチャート" + index, i % 6);
         }
 
         return chartArray;
@@ -96,8 +97,10 @@ define(['bootstrap', 'underscore', 'backbone',
           return new PieChart(option);
         } else if (chartType == 3) {
           return new LineChart(option);
-        } else {
+        } else if (chartType == 4) {
           return new LineChart(option);
+        } else {
+          return new RadarChart(option);
         }
       }
 
@@ -109,7 +112,7 @@ define(['bootstrap', 'underscore', 'backbone',
           var tmpLData = changeDataForLine(lineData);
           var tmpLDataM = changeDataForLine(lineDataMulti);
 
-          if (i % 5 == 0) {
+          if (i % 6 == 0) {
             me.chartArray[i].draw(tmpData);
             if (i + 1 < me.chartArray.length) {
               me.chartArray[i + 1].draw(tmpData);
@@ -122,6 +125,9 @@ define(['bootstrap', 'underscore', 'backbone',
             }
             if (i + 4 < me.chartArray.length) {
               me.chartArray[i + 4].draw(tmpLDataM);
+            }
+            if (i + 5 < me.chartArray.length) {
+              me.chartArray[i + 5].draw(tmpLDataM);
             }
           }
         }
