@@ -6,16 +6,16 @@ define(['chart/chart'], function () {
 
     // Chart共通オプションはChart.js参照
     var DEF_OPT = {
-        labelFontSize : "15px",
-        max : 5,
-        category : ['category1','category2','category3','category4','category5'],
-        labelMarginHeight : 20,
-        labelMarginWidth  : 50,
-        grid : {
-          color : "#393939",
-          outerLineStyle : Chart.STROKE_TYPE_SOLID,
-          innerLineStyle : Chart.STROKE_TYPE_DOT
-        }
+      labelFontSize: "15px",
+      max: 5,
+      category: ['category1', 'category2', 'category3', 'category4', 'category5', 'category6'],
+      labelMarginHeight: 20,
+      labelMarginWidth: 50,
+      grid: {
+        color: "#393939",
+        outerLineStyle: Chart.STROKE_TYPE_SOLID,
+        innerLineStyle: Chart.STROKE_TYPE_DOT
+      }
     };
 
     Chart.call(this, option);
@@ -47,9 +47,9 @@ define(['chart/chart'], function () {
         // グラフ出力サイズ（タイトル・縦ラベル幅を除外）
         // 半径算出
         var top = me._drawTitle(svg, me.opt) + me.opt.labelMarginHeight;
-        var height = this._getHeight(me.opt,top);
+        var height = this._getHeight(me.opt, top);
         var width = me.opt.width - me.opt.labelMarginWidth;
-        var radius = (height < width)?height / 2:width / 2;
+        var radius = (height < width) ? height / 2 : width / 2;
         var left = (me.opt.width / 2) - radius;
 
         var paramCount = me.opt.category.length; // 系統数
@@ -90,7 +90,7 @@ define(['chart/chart'], function () {
             .attr('fill', 'none');
 
         // grid生成
-        me._createGrid(svg, line, left, top, paramCount, max, radius, rScale,me.opt);
+        me._createGrid(svg, line, left, top, paramCount, max, radius, rScale, me.opt);
 
       }
     },
@@ -112,12 +112,12 @@ define(['chart/chart'], function () {
     },
     // 高さ取得
     _getHeight: {
-      value: function (opt,top) {
-          return opt.height - top - opt.labelMarginHeight;
+      value: function (opt, top) {
+        return opt.height - top - opt.labelMarginHeight;
       }
     },
     _createGrid: {
-      value: function (svg, line, left, top, paramCount, max, radius, rScale,opt) {
+      value: function (svg, line, left, top, paramCount, max, radius, rScale, opt) {
 
         var me = this;
 
@@ -139,11 +139,11 @@ define(['chart/chart'], function () {
               return line(d) + "z";
             })
             .attr("stroke", me.opt.grid.color)
-            .attr("stroke-dasharray",function(d,i){
-              return (i == max - 1)?me.opt.grid.outerLineStyle:me.opt.grid.innerLineStyle;
+            .attr("stroke-dasharray", function (d, i) {
+              return (i == max - 1) ? me.opt.grid.outerLineStyle : me.opt.grid.innerLineStyle;
             })
-            .attr("stroke-width", function(d,i){
-              return (i == max - 1)?0.7:0.4;
+            .attr("stroke-width", function (d, i) {
+              return (i == max - 1) ? 0.7 : 0.4;
             })
             .attr('fill', 'none');
 
@@ -188,11 +188,11 @@ define(['chart/chart'], function () {
             .attr("dominant-baseline", "middle")
             .attr('x', function (d, i) {
               return left + (rScale(labelPosition) * Math.cos(2 * Math.PI / paramCount * i - (Math.PI / 2)) + radius) +
-                            (rScale(scale) * Math.cos(2 * Math.PI / paramCount * i - (Math.PI / 2)));
+                  (rScale(scale) * Math.cos(2 * Math.PI / paramCount * i - (Math.PI / 2)));
             })
             .attr('y', function (d, i) {
               return top + (rScale(labelPosition) * Math.sin(2 * Math.PI / paramCount * i - (Math.PI / 2)) + radius) +
-                           (rScale(scale) * Math.sin(2 * Math.PI / paramCount * i - (Math.PI / 2)));
+                  (rScale(scale) * Math.sin(2 * Math.PI / paramCount * i - (Math.PI / 2)));
             })
             .attr("font-size", me.opt.labelFontSize);
 

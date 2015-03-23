@@ -60,7 +60,7 @@ define(['bootstrap', 'underscore', 'backbone',
             caption: caption
           },
           width: 350,
-          height: 300,
+          height: 300
         };
 
         if (chartType == 0) {

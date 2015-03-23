@@ -6,30 +6,30 @@ define(['chart/chart'], function () {
 
     // Chart共通オプションはChart.js参照
     var DEF_OPT = {
-        // 横軸
-        axisX: {
-          height: 20
-        },
-        // 横軸
-        axisY: {
-          max: 500,
-          width: 50
-        },
-        // 右側余裕
-        rightMargin: 20
-      };
+      // 横軸
+      axisX: {
+        height: 20
+      },
+      // 横軸
+      axisY: {
+        max: 500,
+        width: 50
+      },
+      // 右側余裕
+      rightMargin: 20
+    };
 
     Chart.call(this, option);
     $.extend(true, this.opt, DEF_OPT, option);
   };
 
   /* draw時、データ定義サンプル
-  // lineChartサンプルデータ(データ-3系統）
-      Sample.DATA = {
-        caption: ["", "1/25", "2/25", "3/25", "4/25"],  横軸
-        stroke: [{width: 3,type: Chart.STROKE_TYPE_SOLID,color: "#98abc5"},{系統の個数分配列}],
-        value: [[10, 30, 40, 20, 30],[...]] データの個数分配列（横軸定義数と同数） × 系統の個数分配列
-      };
+   ＊ lineChartサンプルデータ(データ-3系統）
+   Sample.DATA = {
+   caption: ["", "1/25", "2/25", "3/25", "4/25"],  横軸
+   stroke: [{width: 3,type: Chart.STROKE_TYPE_SOLID,color: "#98abc5"},{系統の個数分配列}],
+   value: [[10, 30, 40, 20, 30],[...]] データの個数分配列（横軸定義数と同数） × 系統の個数分配列
+   };
    */
   LineChart.prototype = Object.create(Chart.prototype, {
     constructor: {
@@ -54,7 +54,7 @@ define(['chart/chart'], function () {
         var left = me.opt.axisY.width;
         var width = me.opt.width - me.opt.axisY.width - me.opt.rightMargin;
         var top = me._drawTitle(svg, me.opt, (width / 2) + left);
-        var height = this._getHeight(me.opt,top);
+        var height = this._getHeight(me.opt, top);
 
         // 縦軸作成
         me._createAxisY(svg, me.opt, top, left, height, width);
@@ -98,15 +98,15 @@ define(['chart/chart'], function () {
           me.linePath[i]
               .transition()
               .duration(800)
-              .attr('d',me.line[i](data.value[i]));
+              .attr('d', me.line[i](data.value[i]));
         }
 
       }
     },
     // 高さ取得
     _getHeight: {
-      value: function (opt,top) {
-          return opt.height - top - opt.axisX.height; // x軸フォント高さ
+      value: function (opt, top) {
+        return opt.height - top - opt.axisX.height; // x軸フォント高さ
       }
     },
     // 縦軸
@@ -119,7 +119,7 @@ define(['chart/chart'], function () {
 
         svg.append("g")
             .attr("class", "axis")
-            .attr("transform", "translate(" + left + ","+ top + ")")
+            .attr("transform", "translate(" + left + "," + top + ")")
             .call(d3.svg.axis()
                 .scale(yScale) // スケールを適用する
                 .orient("left").tickPadding(5)
@@ -154,15 +154,15 @@ define(['chart/chart'], function () {
         );
 
         svg.append("line")
-        .attr("x1", left + width)
-        .attr("y1", top)
-        .attr("x2", left + width)
-        .attr("y2", height + top)
-        .attr("stroke-width", 0.2)
-        .attr("stroke", "black");
+            .attr("x1", left + width)
+            .attr("y1", top)
+            .attr("x2", left + width)
+            .attr("y2", height + top)
+            .attr("stroke-width", 0.2)
+            .attr("stroke", "black");
 
       }
-    },
+    }
   });
 
   return LineChart;

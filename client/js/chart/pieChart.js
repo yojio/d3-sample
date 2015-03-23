@@ -6,10 +6,10 @@ define(['chart/chart'], function () {
 
     // Chart共通オプションはChart.js参照
     var DEF_OPT = {
-        frameColor:  "white", // データ分割線の色
-        innerRadiusRate : 1 / 2, // 内径（穴あきにしない場合は０、外形からの比率で設定）
-        sorted : false // データソート有無
-      };
+      frameColor: "white", // データ分割線の色
+      innerRadiusRate: 1 / 2, // 内径（穴あきにしない場合は０、外形からの比率で設定）
+      sorted: false // データソート有無
+    };
 
     Chart.call(this, option);
     $.extend(true, this.opt, DEF_OPT, option);
@@ -38,10 +38,10 @@ define(['chart/chart'], function () {
         var svg = d3.select(me.opt.dom).append("svg").attr("width", me.opt.width).attr("height", me.opt.height);
 
         // グラフ出力サイズ（タイトル・縦ラベル幅を除外）
-        var left = 0;
+        // var left = 0;
         var width = me.opt.width;
         var top = me._drawTitle(svg, me.opt);
-        var height = this._getHeight(me.opt,top);
+        var height = this._getHeight(me.opt, top);
         // 半径算出
         var radius = Math.min(width, height) / 2;
 
@@ -74,11 +74,11 @@ define(['chart/chart'], function () {
         circle.append("path") // 円弧はパスで指定する
             .attr("d", arc) // 円弧を設定
             .attr("stroke", me.opt.frameColor) // 円グラフの区切り線色
-            .attr("transform","translate(" + width / 2 + ", " + ((height / 2) + top) + ")") // 円グラフをSVG領域の中心にする
+            .attr("transform", "translate(" + width / 2 + ", " + ((height / 2) + top) + ")") // 円グラフをSVG領域の中心にする
             .style("fill", function (d, i) {
               return d.data.color;
             })
-            // 今の数値を保存します。
+          // 今の数値を保存します。
             .each(function (d, i) {
               me.current[i] = d;
             }).on("mouseover", function (d) {
@@ -89,7 +89,7 @@ define(['chart/chart'], function () {
         // データキャプション表示
         circle.append("text")
             .attr("class", "dataCaption")
-            .attr("transform",function (d) {
+            .attr("transform", function (d) {
               return "translate(" + arc.centroid(d) + ")";
             })
             .attr("dx", width / 2)
@@ -134,7 +134,7 @@ define(['chart/chart'], function () {
             })
             .transition() // トランジションを設定。
             .duration(800) // アニメーションの秒数を設定。
-            .attrTween("transform",function (d, i) {
+            .attrTween("transform", function (d, i) {
               var interpolate = d3.interpolate(arc.centroid(me.current[i]), arc.centroid(d));
               me.current[i] = d;
               return function (t) {
@@ -145,8 +145,8 @@ define(['chart/chart'], function () {
     },
     // 高さ取得
     _getHeight: {
-      value: function (opt,top) {
-          return opt.height - top;
+      value: function (opt, top) {
+        return opt.height - top;
       }
     }
   });

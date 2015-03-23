@@ -7,20 +7,20 @@ define(['chart/chart'], function () {
 
     // Chart共通オプションはChart.js参照
     var DEF_OPT = {
-        // 横軸
-        axisX: {
-          max: 500,
-          height: 20
-        },
-        // 横軸
-        axisY: {
-          width: 50
-        },
-        // BARの太さ
-        barWeight: HolizontalBarChart.WEIGHT_NORMAL,
-        // 右側余裕
-        rightMargin: 20
-      };
+      // 横軸
+      axisX: {
+        max: 500,
+        height: 20
+      },
+      // 横軸
+      axisY: {
+        width: 50
+      },
+      // BARの太さ
+      barWeight: HolizontalBarChart.WEIGHT_NORMAL,
+      // 右側余裕
+      rightMargin: 20
+    };
 
     Chart.call(this, option);
     $.extend(true, this.opt, DEF_OPT, option);
@@ -57,7 +57,7 @@ define(['chart/chart'], function () {
         var left = me.opt.axisY.width;
         var width = me.opt.width - me.opt.axisY.width - me.opt.rightMargin;
         var top = me._drawTitle(svg, me.opt, (width / 2) + left);
-        var height = this._getHeight(me.opt,top);
+        var height = this._getHeight(me.opt, top);
 
         // 横軸作成
         me._createAxisX(svg, me.opt, top, left, height, width);
@@ -79,11 +79,11 @@ define(['chart/chart'], function () {
             .attr("x", left)
             .attr("y", function (d, i) {   // Y座標を配列の順序に応じて計算
               var value = top + ((data.length - (i + 1)) * barAreaSize) + ((barAreaSize - barSize) / 2);
-              return (value >= 0)?value:0;
+              return (value >= 0) ? value : 0;
             })
             .attr("width", function (d) { // 横幅を配列の内容に応じて計算
               var value = (d.value * me.barScale) - 1;
-              return ((value >= 0)?value:0) + "px"; // 縦軸とかぶるので、widthとtranslateで調整
+              return ((value >= 0) ? value : 0) + "px"; // 縦軸とかぶるので、widthとtranslateで調整
             })
             .attr("height", barSize)   // 棒グラフの高さを指定
             .attr("transform", "translate(1, 0)")
@@ -113,8 +113,8 @@ define(['chart/chart'], function () {
     },
     // 高さ取得
     _getHeight: {
-      value: function (opt,top) {
-          return opt.height - top - opt.axisX.height; // x軸フォント高さ
+      value: function (opt, top) {
+        return opt.height - top - opt.axisX.height; // x軸フォント高さ
       }
     },
     // 縦軸
@@ -144,12 +144,12 @@ define(['chart/chart'], function () {
         );
 
         svg.append("line")
-        .attr("x1", left)
-        .attr("y1", top)
-        .attr("x2", left + width)
-        .attr("y2", top)
-        .attr("stroke-width", 0.2)
-        .attr("stroke", "black");
+            .attr("x1", left)
+            .attr("y1", top)
+            .attr("x2", left + width)
+            .attr("y2", top)
+            .attr("stroke-width", 0.2)
+            .attr("stroke", "black");
 
       }
     },
