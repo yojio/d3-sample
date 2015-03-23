@@ -43,9 +43,9 @@ define(['chart/pieChart', 'chart/horizontalBarChart', 'chart/varticalBarChart', 
       Sample.LINE_DATA_MULTI = {
         caption: ["", "1/25", "2/25", "3/25", "4/25"],
         stroke: [{
-//          width: 3,
-//          type: Chart.STROKE_TYPE_SOLID,
-//          color: "#98abc5"
+          width: 3,
+          type: Chart.STROKE_TYPE_SOLID,
+          color: "#98abc5"
         }, {
           width: 2,
           type: Chart.STROKE_TYPE_DOT,

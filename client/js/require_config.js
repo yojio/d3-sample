@@ -17,9 +17,7 @@ var require = {
     },
     underscore: {
       exports: '_'
-    },
-    d3: {
-      exports: 'd3'
     }
   }
+
 };

@@ -115,8 +115,21 @@ define(['chart/chart'], function () {
             .attr("d", function (d, i) {
               return line(d) + "z";
             })
-            .attr("stroke", "black")
-            .attr("stroke-dasharray", "2")
+            .attr("stroke", "#393939")
+            .attr("stroke-dasharray",function(d,i){
+              if (i == max - 1){
+                return "";
+              }else{
+                return Chart.STROKE_TYPE_DOT;
+              }
+            })
+            .attr("stroke-width", function(d,i){
+              if (i == max - 1){
+                return 0.7;
+              }else{
+                return 0.4;
+              }
+            })
             .attr('fill', 'none');
 
         // グリッド描画
@@ -132,8 +145,8 @@ define(['chart/chart'], function () {
               }).attr("y2", function (d, i) {
                 return top + rScale(d) * Math.sin(2 * Math.PI / paramCount * x - (Math.PI / 2)) + radius;
               })
-              .attr("stroke-width", 0.5)
-              .attr("stroke", "black")
+              .attr("stroke-width", 0.4)
+              .attr("stroke", "#393939")
               .attr("stroke-dasharray", "2");
         }
 

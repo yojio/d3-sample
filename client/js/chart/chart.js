@@ -41,10 +41,10 @@ define(['jquery', 'd3'], function () {
       // radar
       radar : {
         labelFontSize : "15px",
-        max : 5,
+        max : 10,
         category : ['category1',
                     'category2',
-                    'category3',
+                    //'category3',
                     'category4',
                     'category5',
                     'category6']
@@ -72,7 +72,7 @@ define(['jquery', 'd3'], function () {
 // 線種
   Chart.STROKE_TYPE_SOLID = "";
   Chart.STROKE_TYPE_DASH = "10 4";
-  Chart.STROKE_TYPE_DOT = "2 2";
+  Chart.STROKE_TYPE_DOT = "4 4";
 
 // BARの太さ
   Chart.BAR_WEIGHT_THIN = 0.6;

@@ -7,7 +7,6 @@ define(['bootstrap', 'underscore', 'backbone',
     function (bootstrap, _, backbone) {
 
       var maxRange = 500;
-      var me = this;
 
       // event define
 
@@ -35,7 +34,7 @@ define(['bootstrap', 'underscore', 'backbone',
       });
 
       // サンプルChart
-      me.chartArray = createChart(6);
+      this.chartArray = createChart(6);
 
       function createChart(chartCount) {
 
@@ -86,9 +85,6 @@ define(['bootstrap', 'underscore', 'backbone',
           }
         };
 
-//        if (chartType == 0) {
-//          return new PieChart(option);
-//        } else
         if (chartType == 0) {
           return new HolizontalBarChart(option);
         } else if (chartType == 1) {
@@ -105,30 +101,30 @@ define(['bootstrap', 'underscore', 'backbone',
       }
 
       function drawChart(data, lineData, lineDataMulti) {
-        // 処理,,,,,
-        var list;
-        for (var i = 0; i < me.chartArray.length; i++) {
+
+        for (var i = 0; i < this.chartArray.length; i++) {
+
           var tmpData = changeData(data);
           var tmpLData = changeDataForLine(lineData);
           var tmpLDataM = changeDataForLine(lineDataMulti);
           var tmpRData = changeDataForRadar(Sample.RADAR_DATA);
 
           if (i % 6 == 0) {
-            me.chartArray[i].draw(tmpData);
-            if (i + 1 < me.chartArray.length) {
-              me.chartArray[i + 1].draw(tmpData);
+            this.chartArray[i].draw(tmpData);
+            if (i + 1 < this.chartArray.length) {
+              this.chartArray[i + 1].draw(tmpData);
             }
-            if (i + 2 < me.chartArray.length) {
-              me.chartArray[i + 2].draw(tmpData);
+            if (i + 2 < this.chartArray.length) {
+              this.chartArray[i + 2].draw(tmpData);
             }
-            if (i + 3 < me.chartArray.length) {
-              me.chartArray[i + 3].draw(tmpLData);
+            if (i + 3 < this.chartArray.length) {
+              this.chartArray[i + 3].draw(tmpLData);
             }
-            if (i + 4 < me.chartArray.length) {
-              me.chartArray[i + 4].draw(tmpLDataM);
+            if (i + 4 < this.chartArray.length) {
+              this.chartArray[i + 4].draw(tmpLDataM);
             }
-            if (i + 5 < me.chartArray.length) {
-              me.chartArray[i + 5].draw(tmpRData);
+            if (i + 5 < this.chartArray.length) {
+              this.chartArray[i + 5].draw(tmpRData);
             }
           }
         }
@@ -137,7 +133,6 @@ define(['bootstrap', 'underscore', 'backbone',
       function changeData(data) {
         for (var i = 0; i < data.length; i++) {
           data[i].value = getRandomInt(0, maxRange);
-//          data[i].value = 250;
         }
         return data;
       }
@@ -146,7 +141,6 @@ define(['bootstrap', 'underscore', 'backbone',
         for (var i = 0; i < lineData.value.length; i++) {
           for (var k = 0; k < lineData.value[i].length; k++) {
             lineData.value[i][k] = getRandomInt(0, maxRange);
-//            lineData.value[i][k] = 250;
           }
         }
         return lineData;
