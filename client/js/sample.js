@@ -8,23 +8,23 @@ define(['chart/pieChart', 'chart/horizontalBarChart', 'chart/varticalBarChart', 
 // pieChart,barChartサンプルデータ
       Sample.DATA = [{
         caption: "項目1",
-        value: "",
+        value: "10",
         color: "#98abc5"
       }, {
         caption: "項目2",
-        value: "",
+        value: "30",
         color: "#8a89a6"
       }, {
         caption: "項目3",
-        value: "",
+        value: "500",
         color: "#7b6888"
       }, {
         caption: "項目4",
-        value: "",
+        value: "20",
         color: "#6b486b"
       }, {
         caption: "項目5",
-        value: "",
+        value: "600",
         color: "#a05d56"
       }];
 

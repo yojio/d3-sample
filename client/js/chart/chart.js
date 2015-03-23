@@ -10,44 +10,12 @@ define(['jquery', 'd3'], function () {
       dom: "", // 表示用DIV
       width: 100, // サイズ横
       height: 100, // サイズ縦
-      sorted: false,
       // タイトル情報
       title: {
         caption: "",
         height: 20,
         fontSize: 16,
         margin: 10
-      },
-      // 横
-      axisX: {
-        max: 1000,
-        caption: '値'
-      },
-      // 縦
-      axisY: {
-        max: 1000,
-        width: 50,
-        title: '種類'
-      },
-      // bar
-      bar: {
-        weight: Chart.BAR_WEIGHT_NORMAL
-      },
-      // pie
-      pie : {
-        frameColor : "white",
-        innerRadiusRate : 1 / 2
-      },
-      // radar
-      radar : {
-        labelFontSize : "15px",
-        max : 10,
-        category : ['category1',
-                    'category2',
-                    //'category3',
-                    'category4',
-                    'category5',
-                    'category6']
       }
     };
 
@@ -73,37 +41,6 @@ define(['jquery', 'd3'], function () {
   Chart.STROKE_TYPE_SOLID = "";
   Chart.STROKE_TYPE_DASH = "10 4";
   Chart.STROKE_TYPE_DOT = "4 4";
-
-// BARの太さ
-  Chart.BAR_WEIGHT_THIN = 0.6;
-  Chart.BAR_WEIGHT_NORMAL = 0.8;
-  Chart.BAR_WEIGHT_THICK = 1;
-
-
-// データ定義
-// pieChart,barChart
-// var data = [
-// {
-// caption:"caption1"
-// ,value:"data1" // numericOnly!
-// ,color:"color1" // colorcode #98abc5
-// },
-// ]
-
-// lineChart
-// var data = {
-// caption : ["caption1","caption2",,,,] // 横軸（データの個数分）
-//  ,stroke:[{
-//    width : 2,
-//    type : Chart.STROKE_TYPE_DOT,
-//    color : "#98abc5"
-//  },{},{}] // データのバリエーション分
-// ,value:[ // 線の数だけデータを容易
-// [10,30,40,20,30] // データの個数は横軸の数と合わせる
-// ,[100,20,30,50,60]
-// ,[100,20,30,50,60]
-// ]
-// }
 
 // 描画
   Chart.prototype.draw = function (data) {
@@ -150,10 +87,6 @@ define(['jquery', 'd3'], function () {
     return opt.title.height + opt.title.margin;
   };
 
-  // 高さ取得
-  Chart.prototype._getHeight = function (opt) {
-        return opt.height - 20; // x軸フォント高さ
-  };
 });
 
 

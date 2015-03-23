@@ -59,30 +59,8 @@ define(['bootstrap', 'underscore', 'backbone',
           title: {
             caption: caption
           },
-          stroke : {
-            width : 2, // 枠線の太さ
-//            type  : Chart.STROKE_TYPE_DASH
-            type  : Chart.STROKE_TYPE_DOT
-          },
           width: 350,
           height: 300,
-          sorted: false,
-          // 横
-          axisX : {
-            max : maxRange,
-            width : 14,
-            caption : '値'
-          },
-          // 縦
-          axisY : {
-            max : maxRange,
-            width : 50,
-            title : '種類'
-          },
-          // bar
-          bar : {
-            weight : Chart.BAR_WEIGHT_THICK
-          }
         };
 
         if (chartType == 0) {
@@ -149,7 +127,7 @@ define(['bootstrap', 'underscore', 'backbone',
       function changeDataForRadar(radarData) {
         for (var i = 0; i < radarData.length; i++) {
           for (var k = 0; k < radarData[i].value.length; k++) {
-            radarData[i].value[k] = getRandomInt(0, 5);
+            radarData[i].value[k] = getRandomInt(1, 5);
           }
         }
         return radarData;

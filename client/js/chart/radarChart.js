@@ -3,8 +3,27 @@
  */
 define(['chart/chart'], function () {
   this.RadarChart = function RadarChart(option) {
+
+    // Chart共通オプションはChart.js参照
+    var DEF_OPT = {
+        labelFontSize : "15px",
+        max : 5,
+        category : ['category1','category2','category3','category4','category5'],
+        labelMarginHeight : 20,
+        labelMarginWidth  : 50,
+        grid : {
+          color : "#393939",
+          outerLineStyle : Chart.STROKE_TYPE_SOLID,
+          innerLineStyle : Chart.STROKE_TYPE_DOT
+        }
+    };
+
     Chart.call(this, option);
+    $.extend(true, this.opt, DEF_OPT, option);
   };
+  /* draw時、データ定義サンプル
+   * Sample.DATA = [{width: 2,type: Chart.STROKE_TYPE_DASH,color: "#a05d56",value: [2, 3, 2, 1, 4]},{...}];
+   */
 
   RadarChart.prototype = Object.create(Chart.prototype, {
     constructor: {
@@ -26,17 +45,15 @@ define(['chart/chart'], function () {
         var svg = d3.select(me.opt.dom).append("svg").attr("width", me.opt.width).attr("height", me.opt.height);
 
         // グラフ出力サイズ（タイトル・縦ラベル幅を除外）
-        var top = me._drawTitle(svg, me.opt) + 30;
-        var width = me.opt.width;
-        var height = this._getHeight(me.opt);
-        var radius = (height - top - 20) / 2;
-        if (width < (height - top - 20)) {
-          radius = width / 2;
-        }
-        var left = (width / 2) - radius;
+        // 半径算出
+        var top = me._drawTitle(svg, me.opt) + me.opt.labelMarginHeight;
+        var height = this._getHeight(me.opt,top);
+        var width = me.opt.width - me.opt.labelMarginWidth;
+        var radius = (height < width)?height / 2:width / 2;
+        var left = (me.opt.width / 2) - radius;
 
-        var paramCount = me.opt.radar.category.length; // 頂点数
-        var max = me.opt.radar.max; // データ最大
+        var paramCount = me.opt.category.length; // 系統数
+        var max = me.opt.max; // メモリ最大
 
         var rScale = d3.scale.linear() // スケールを設定
             .domain([0, max]) // 元のサイズ
@@ -73,7 +90,7 @@ define(['chart/chart'], function () {
             .attr('fill', 'none');
 
         // grid生成
-        me._createGrid(svg, line, left, top, paramCount, max, radius, rScale);
+        me._createGrid(svg, line, left, top, paramCount, max, radius, rScale,me.opt);
 
       }
     },
@@ -93,8 +110,14 @@ define(['chart/chart'], function () {
 
       }
     },
+    // 高さ取得
+    _getHeight: {
+      value: function (opt,top) {
+          return opt.height - top - opt.labelMarginHeight;
+      }
+    },
     _createGrid: {
-      value: function (svg, line, left, top, paramCount, max, radius, rScale) {
+      value: function (svg, line, left, top, paramCount, max, radius, rScale,opt) {
 
         var me = this;
 
@@ -115,20 +138,12 @@ define(['chart/chart'], function () {
             .attr("d", function (d, i) {
               return line(d) + "z";
             })
-            .attr("stroke", "#393939")
+            .attr("stroke", me.opt.grid.color)
             .attr("stroke-dasharray",function(d,i){
-              if (i == max - 1){
-                return "";
-              }else{
-                return Chart.STROKE_TYPE_DOT;
-              }
+              return (i == max - 1)?me.opt.grid.outerLineStyle:me.opt.grid.innerLineStyle;
             })
             .attr("stroke-width", function(d,i){
-              if (i == max - 1){
-                return 0.7;
-              }else{
-                return 0.4;
-              }
+              return (i == max - 1)?0.7:0.4;
             })
             .attr('fill', 'none');
 
@@ -146,8 +161,8 @@ define(['chart/chart'], function () {
                 return top + rScale(d) * Math.sin(2 * Math.PI / paramCount * x - (Math.PI / 2)) + radius;
               })
               .attr("stroke-width", 0.4)
-              .attr("stroke", "#393939")
-              .attr("stroke-dasharray", "2");
+              .attr("stroke", me.opt.grid.color)
+              .attr("stroke-dasharray", me.opt.grid.innerLineStyle);
         }
 
         // ラベル描画
@@ -158,11 +173,12 @@ define(['chart/chart'], function () {
       value: function (svg, left, top, paramCount, max, radius, rScale) {
 
         var me = this;
-        var labelPosition = max + 1;
+        var labelPosition = max;
+        var scale = labelPosition / 10; // ラベル位置補正（10分割した時のキャプションの位置に固定する）
 
         svg.selectAll(".dataCaption")
             .attr("class", "dataCaption")
-            .data(me.opt.radar.category)
+            .data(me.opt.category)
             .enter()
             .append('text')
             .text(function (d, i) {
@@ -171,12 +187,14 @@ define(['chart/chart'], function () {
             .attr("text-anchor", "middle")
             .attr("dominant-baseline", "middle")
             .attr('x', function (d, i) {
-              return left + rScale(labelPosition) * Math.cos(2 * Math.PI / paramCount * i - (Math.PI / 2)) + radius;
+              return left + (rScale(labelPosition) * Math.cos(2 * Math.PI / paramCount * i - (Math.PI / 2)) + radius) +
+                            (rScale(scale) * Math.cos(2 * Math.PI / paramCount * i - (Math.PI / 2)));
             })
             .attr('y', function (d, i) {
-              return top + rScale(labelPosition) * Math.sin(2 * Math.PI / paramCount * i - (Math.PI / 2)) + radius;
+              return top + (rScale(labelPosition) * Math.sin(2 * Math.PI / paramCount * i - (Math.PI / 2)) + radius) +
+                           (rScale(scale) * Math.sin(2 * Math.PI / paramCount * i - (Math.PI / 2)));
             })
-            .attr("font-size", me.opt.radar.labelFontSize);
+            .attr("font-size", me.opt.labelFontSize);
 
       }
     }

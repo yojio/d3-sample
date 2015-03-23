@@ -3,9 +3,21 @@
  */
 define(['chart/chart'], function () {
   this.PieChart = function PieChart(option) {
+
+    // Chart共通オプションはChart.js参照
+    var DEF_OPT = {
+        frameColor:  "white", // データ分割線の色
+        innerRadiusRate : 1 / 2, // 内径（穴あきにしない場合は０、外形からの比率で設定）
+        sorted : false // データソート有無
+      };
+
     Chart.call(this, option);
+    $.extend(true, this.opt, DEF_OPT, option);
   };
 
+  /* draw時、データ定義サンプル
+   *  Sample.DATA = [{caption: "項目1",value: "50",color: "#98abc5"},{データの個数分配列}]
+   */
   PieChart.prototype = Object.create(Chart.prototype, {
     constructor: {
       value: PieChart,
@@ -18,7 +30,6 @@ define(['chart/chart'], function () {
       value: function (data) {
 
         var me = this;
-        me.current = new Array(data.length);
 
         // 領域のリセット
         $(me.opt.dom).empty();
@@ -26,17 +37,17 @@ define(['chart/chart'], function () {
         // 規定オブジェクト生成
         var svg = d3.select(me.opt.dom).append("svg").attr("width", me.opt.width).attr("height", me.opt.height);
 
-        var top = me._drawTitle(svg, me.opt);
+        // グラフ出力サイズ（タイトル・縦ラベル幅を除外）
         var left = 0;
-        var width = me.opt.width - 7;
-        var height = this._getHeight(me.opt) - 7;
-
+        var width = me.opt.width;
+        var top = me._drawTitle(svg, me.opt);
+        var height = this._getHeight(me.opt,top);
         // 半径算出
-        var radius = Math.min(width, height - top) / 2;
+        var radius = Math.min(width, height) / 2;
 
         // 円グラフのサイズを指定
         var arc = d3.svg.arc()
-            .innerRadius(radius * me.opt.pie.innerRadiusRate) // 内径
+            .innerRadius(radius * me.opt.innerRadiusRate) // 内径
             .outerRadius(radius); // 外径
 
         // 円グラフを生成
@@ -59,9 +70,10 @@ define(['chart/chart'], function () {
             .enter()
             .append("g");
 
+        me.current = new Array(data.length);
         circle.append("path") // 円弧はパスで指定する
             .attr("d", arc) // 円弧を設定
-            .attr("stroke", me.opt.pie.frameColor) // 円グラフの区切り線色
+            .attr("stroke", me.opt.frameColor) // 円グラフの区切り線色
             .attr("transform","translate(" + width / 2 + ", " + ((height / 2) + top) + ")") // 円グラフをSVG領域の中心にする
             .style("fill", function (d, i) {
               return d.data.color;
@@ -129,6 +141,12 @@ define(['chart/chart'], function () {
                 return "translate(" + interpolate(t) + ")";
               };
             });
+      }
+    },
+    // 高さ取得
+    _getHeight: {
+      value: function (opt,top) {
+          return opt.height - top;
       }
     }
   });
