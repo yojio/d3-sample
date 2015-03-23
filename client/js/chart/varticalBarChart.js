@@ -86,7 +86,7 @@ define(['chart/chart'], function () {
             })
             .attr("width", barSize)
             .attr("height", function (d) {
-              var value = d.value * me.barScale;
+              var value = (d.value * me.barScale) - 1;
               return ((value >= 0) ? value : 0) + "px";
             })
             .attr("transform", "translate(0, 0)")
