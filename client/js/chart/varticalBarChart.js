@@ -111,13 +111,13 @@ define(['chart/chart'], function () {
         svg.selectAll("rect")   // SVGでの四角形を示す要素を指定
             .data(data) // データを設定
             .transition()
-            .duration(800) // 動作時間ß
+            .duration(800) // 動作時間
             .attr("y", function (d) {
               var value = ((height + top) - (d.value * me.barScale));
               return ((value >= 0) ? value : 0) + "px";
             })
             .attr("height", function (d) {
-              var value = d.value * me.barScale;
+              var value = (d.value * me.barScale) - 1;
               return ((value >= 0) ? value : 0) + "px";
             })
 

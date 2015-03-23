@@ -2,6 +2,13 @@
  * Created by yoji on 15/03/09.
  */
 
+// TODO データ選択イベント（円グラフで領域を浮かび上がらせる。
+// TODO データ選択でツールチップ
+// TODO 棒グラフと折れ線グラフのミックス
+// TODO 軸のラベル（単位等）
+// TODO radarChartの内部領域を半透明描画（マウスオーバーなどで）
+// TODO radarChartで外周円を描画する。
+
 // Chart基底クラス
 define(['jquery', 'd3'], function () {
   this.Chart = function Chart(option) {

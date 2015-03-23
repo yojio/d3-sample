@@ -71,6 +71,7 @@ define(['chart/chart'], function () {
         me.line = line;
 
         // データ描画
+        // TODO 拡大すると頂点に少し誤差がある
         me.linePath = svg.selectAll('path')
             .data(data)
             .enter()
@@ -172,6 +173,7 @@ define(['chart/chart'], function () {
     _createGridLabel: {
       value: function (svg, left, top, paramCount, max, radius, rScale) {
 
+        // TODO ラベル位置がグラフにかぶる。（文字列のピクセル長を取得する必要あり）
         var me = this;
         var labelPosition = max;
         var scale = labelPosition / 10; // ラベル位置補正（10分割した時のキャプションの位置に固定する）
