@@ -3,10 +3,12 @@
  */
 define(['bootstrap', 'underscore', 'backbone',
         'sample','chart/pieChart', 'chart/horizontalBarChart',
-        'chart/varticalBarChart', 'chart/lineChart', 'chart/radarChart'],
+        'chart/varticalBarChart', 'chart/lineChart', 'chart/radarChart'
+        ,'chart/normalTree'],
     function (bootstrap, _, backbone) {
 
       var maxRange = 500;
+      var me = this;
 
       // event define
 
@@ -16,6 +18,8 @@ define(['bootstrap', 'underscore', 'backbone',
         var previous_tab = e.relatedTarget; // previous tab
         if (activated_tab.hash == "#menu2") {
           drawChart(Sample.DATA, Sample.LINE_DATA, Sample.LINE_DATA_MULTI);
+        } else if (activated_tab.hash == "#menu3") {
+          createBasicTree();
         }
       });
 
@@ -34,7 +38,8 @@ define(['bootstrap', 'underscore', 'backbone',
       });
 
       // サンプルChart
-      this.chartArray = createChart(6);
+      me.chartArray = createChart(6);
+      drawChart(Sample.DATA, Sample.LINE_DATA, Sample.LINE_DATA_MULTI);
 
       function createChart(chartCount) {
 
@@ -43,7 +48,7 @@ define(['bootstrap', 'underscore', 'backbone',
         for (var i = 0; i < chartArray.length; i++) {
           index = i + 1;
           item = "chart" + i;
-          $("#result").append(
+          $("#target1").append(
               '<div id=\"' + item + '\" style=\"float:left\"></div>');
           chartArray[i] = createChartObject("#" + item, "サンプルチャート" + index, i % 6);
         }
@@ -64,45 +69,59 @@ define(['bootstrap', 'underscore', 'backbone',
         };
 
         if (chartType == 0) {
+          option.title.caption = "合格最低点人数分布(人)";
+          option.axisX = {
+            max:40
+          };
           return new HolizontalBarChart(option);
         } else if (chartType == 1) {
+          option.title.caption = "合格最低点人数分布(人)";
+          option.axisY = {
+            max:40
+          };
           return new VerticalBarChart(option);
         } else if (chartType == 2) {
+          option.title.caption = "東大理系ー配点(%)";
           return new PieChart(option);
         } else if (chartType == 3) {
+          option.title.caption = "五教科合計点推移";
           return new LineChart(option);
         } else if (chartType == 4) {
+          option.title.caption = "五教科合計点推移";
           return new LineChart(option);
         } else {
+          option.title.caption = "分類別評価(5段階)";
+          option.max = 5;
+          option.category = ["英語","数学","理科","国語","社会"];
           return new RadarChart(option);
         }
       }
 
       function drawChart(data, lineData, lineDataMulti) {
 
-        for (var i = 0; i < this.chartArray.length; i++) {
+        for (var i = 0; i < me.chartArray.length; i++) {
 
-          var tmpData = changeData(data);
+//          var tmpData = changeData(data);
           var tmpLData = changeDataForLine(lineData);
           var tmpLDataM = changeDataForLine(lineDataMulti);
           var tmpRData = changeDataForRadar(Sample.RADAR_DATA);
 
           if (i % 6 == 0) {
-            this.chartArray[i].draw(tmpData);
-            if (i + 1 < this.chartArray.length) {
-              this.chartArray[i + 1].draw(tmpData);
+            me.chartArray[i].draw(Sample.BAR_DATA);
+            if (i + 1 < me.chartArray.length) {
+              me.chartArray[i + 1].draw(Sample.BAR_DATA);
             }
-            if (i + 2 < this.chartArray.length) {
-              this.chartArray[i + 2].draw(tmpData);
+            if (i + 2 < me.chartArray.length) {
+              me.chartArray[i + 2].draw(Sample.PIE_DATA);
             }
-            if (i + 3 < this.chartArray.length) {
-              this.chartArray[i + 3].draw(tmpLData);
+            if (i + 3 < me.chartArray.length) {
+              me.chartArray[i + 3].draw(tmpLData);
             }
-            if (i + 4 < this.chartArray.length) {
-              this.chartArray[i + 4].draw(tmpLDataM);
+            if (i + 4 < me.chartArray.length) {
+              me.chartArray[i + 4].draw(tmpLDataM);
             }
-            if (i + 5 < this.chartArray.length) {
-              this.chartArray[i + 5].draw(tmpRData);
+            if (i + 5 < me.chartArray.length) {
+              me.chartArray[i + 5].draw(tmpRData);
             }
           }
         }
@@ -135,5 +154,24 @@ define(['bootstrap', 'underscore', 'backbone',
 
       function getRandomInt(min, max) {
         return Math.floor(Math.random() * (max - min + 1)) + min;
+      }
+
+      function createBasicTree(){
+
+        var dom = "normalTree";
+        $("#target2").append('<div id=\"' + dom + '\" style=\"float:left\"></div>');
+
+        var option = {
+            dom: '#' + dom,
+            title: {
+              caption: '基本ツリー'
+            },
+            width: 800,
+            height: 800
+          };
+
+        var normalTree = new NormalTree(option);
+        normalTree.draw(Sample.TREE_DATA);
+
       }
     });

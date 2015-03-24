@@ -29,13 +29,15 @@
     <!--タブの表示-->
     <ul class="nav nav-tabs nav-justfied">
         <!--<ul class="nav nav-pills">-->
-        <li class="active"><a href="#menu1" data-toggle="tab">list</a></li>
-        <li><a href="#menu2" data-toggle="tab">Graph</a></li>
+        <li><a href="#menu1" data-toggle="tab">データ入力（未着手）</a></li>
+        <li class="active"><a href="#menu2" data-toggle="tab">基本チャート</a></li>
+        <li><a href="#menu3" data-toggle="tab">基本ツリー</a></li>
+        <li><a href="#menu4" data-toggle="tab">動きのあるツリー</a></li>
     </ul>
 
     <!--タブの内容-->
     <div class="tab-content">
-        <div class="tab-pane fade in active" id="menu1">
+        <div class="tab-pane fade" id="menu1">
             <form id="addForm" class="form">
                 <input col type="text" name="item" class="input-block-level" placeholder="項目名"/>
                 <input type="number" name="val" min="0" max="9999.99" class="input-block-level" placeholder="値"/>
@@ -51,12 +53,20 @@
                     <tr><td>項目名5</td><td><div class="text-right">¥555.00</div></td><td><a href="#" id="editBtn5" class="btn btn-link">Edit</a><a href="#" id="delBtn5" class="btn btn-link">Delete</a></td></tr>
                     <tr><td>項目名6</td><td><div class="text-right">¥95212</div></td><td><a href="#" id="editBtn6" class="btn btn-link">Edit</a><a href="#" id="delBtn6" class="btn btn-link">Delete</a></td></tr>
                 </table>
+            </div>
         </div>
-        </div>
-        <div class="tab-pane fade" id="menu2">
+        <div class="tab-pane fade in active" id="menu2">
+            <div>d3.jsのみを利用したシンプルなチャート</div>
             <a href="#" id="dataChange" class="btn btn-defalut">データ変更</a>
-            <div id="result"></div>
-            <span id="tooltip"></span>
+            <div id="target1"></div>
+        </div>
+        <div class="tab-pane fade" id="menu3">
+            <div>d3.jsのみを利用したシンプルなツリー</div>
+            <div id="target2"></div>
+        </div>
+        <div class="tab-pane fade" id="menu4">
+            <div>d3.layoutのみを利用した動きのあるツリー</div>
+            <div id="target3"></div>
         </div>
     </div>
 
@@ -97,7 +107,3 @@
 
 </body>
 </html>
-
-
-
-  

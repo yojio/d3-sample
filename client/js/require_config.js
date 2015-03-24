@@ -7,7 +7,7 @@ var require = {
     underscore: ['https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.2/underscore'],
     backbone: ['https://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.1.2/backbone'],
     marionette: ['https://cdnjs.cloudflare.com/ajax/libs/backbone.marionette/2.4.1/backbone.marionette'],
-    d3: ['http://d3js.org/d3.v3']
+    d3: ['https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3']
   },
 
   shim: {

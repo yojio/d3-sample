@@ -20,6 +20,9 @@ define(['chart/chart'], function () {
 
     Chart.call(this, option);
     $.extend(true, this.opt, DEF_OPT, option);
+    if (option.category){
+      this.opt.category = option.category;
+    }
   };
   /* draw時、データ定義サンプル
    * Sample.DATA = [{width: 2,type: Chart.STROKE_TYPE_DASH,color: "#a05d56",value: [2, 3, 2, 1, 4]},{...}];
