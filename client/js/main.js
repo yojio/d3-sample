@@ -4,7 +4,8 @@
 define(['bootstrap', 'underscore', 'backbone',
         'sample','chart/pieChart', 'chart/horizontalBarChart',
         'chart/varticalBarChart', 'chart/lineChart', 'chart/radarChart'
-        ,'chart/normalTree','chart/roundTree','chart/treeMap'],
+        ,'chart/normalTree','chart/roundTree','chart/treeMap'
+        ,'chart/activePartition'],
     function (bootstrap, _, backbone) {
 
       var maxRange = 500;
@@ -192,9 +193,13 @@ define(['bootstrap', 'underscore', 'backbone',
         var roundTree = new RoundTree(option);
         roundTree.draw(Sample.TREE_DATA);
 
+      }
+
+      function createExtraTree(){
+
         // ツリーマップ
         var dom = "treeMap";
-        $("#target2").append('<div id=\"' + dom + '\" style=\"float:left\"></div>');
+        $("#target3").append('<div id=\"' + dom + '\" style=\"float:left\"></div>');
 
         var option = {
             dom: '#' + dom,
@@ -208,24 +213,20 @@ define(['bootstrap', 'underscore', 'backbone',
         var treeMap = new TreeMap(option);
         treeMap.draw(Sample.TREE_DATA);
 
-      }
-
-      function createExtraTree(){
-
-        // 基本ツリー
-        var dom = "normalTree2";
+        // パーテーション
+        var dom = "activePartition";
         $("#target3").append('<div id=\"' + dom + '\" style=\"float:left\"></div>');
 
         var option = {
             dom: '#' + dom,
             title: {
-              caption: '基本ツリー'
+              caption: 'パーテーション'
             },
             width: 800,
             height: 800
           };
 
-        var normalTree = new NormalTree(option);
-        normalTree.draw(Sample.TREE_DATA);
+        var activePartition = new ActivePartition(option);
+        activePartition.draw(Sample.TREE_DATA);
       }
     });
