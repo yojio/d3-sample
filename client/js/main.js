@@ -4,7 +4,7 @@
 define(['bootstrap', 'underscore', 'backbone',
         'sample','chart/pieChart', 'chart/horizontalBarChart',
         'chart/varticalBarChart', 'chart/lineChart', 'chart/radarChart'
-        ,'chart/normalTree'],
+        ,'chart/normalTree','chart/roundTree','chart/treeMap'],
     function (bootstrap, _, backbone) {
 
       var maxRange = 500;
@@ -20,6 +20,8 @@ define(['bootstrap', 'underscore', 'backbone',
           drawChart(Sample.DATA, Sample.LINE_DATA, Sample.LINE_DATA_MULTI);
         } else if (activated_tab.hash == "#menu3") {
           createBasicTree();
+        } else if (activated_tab.hash == "#menu4") {
+          createExtraTree();
         }
       });
 
@@ -158,6 +160,7 @@ define(['bootstrap', 'underscore', 'backbone',
 
       function createBasicTree(){
 
+        // 基本ツリー
         var dom = "normalTree";
         $("#target2").append('<div id=\"' + dom + '\" style=\"float:left\"></div>');
 
@@ -173,5 +176,56 @@ define(['bootstrap', 'underscore', 'backbone',
         var normalTree = new NormalTree(option);
         normalTree.draw(Sample.TREE_DATA);
 
+        // 円形ツリー
+        var dom = "roundTree";
+        $("#target2").append('<div id=\"' + dom + '\" style=\"float:left\"></div>');
+
+        var option = {
+            dom: '#' + dom,
+            title: {
+              caption: '円形ツリー'
+            },
+            width: 800,
+            height: 800
+          };
+
+        var roundTree = new RoundTree(option);
+        roundTree.draw(Sample.TREE_DATA);
+
+        // ツリーマップ
+        var dom = "treeMap";
+        $("#target2").append('<div id=\"' + dom + '\" style=\"float:left\"></div>');
+
+        var option = {
+            dom: '#' + dom,
+            title: {
+              caption: 'ツリーマップ'
+            },
+            width: 800,
+            height: 800
+          };
+
+        var treeMap = new TreeMap(option);
+        treeMap.draw(Sample.TREE_DATA);
+
+      }
+
+      function createExtraTree(){
+
+        // 基本ツリー
+        var dom = "normalTree2";
+        $("#target3").append('<div id=\"' + dom + '\" style=\"float:left\"></div>');
+
+        var option = {
+            dom: '#' + dom,
+            title: {
+              caption: '基本ツリー'
+            },
+            width: 800,
+            height: 800
+          };
+
+        var normalTree = new NormalTree(option);
+        normalTree.draw(Sample.TREE_DATA);
       }
     });

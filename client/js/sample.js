@@ -113,52 +113,53 @@ define(['chart/pieChart', 'chart/horizontalBarChart', 'chart/varticalBarChart', 
 
 // ツリーサンプルデータ
 Sample.TREE_DATA = {
-  "name": "flare",
+  "name": "なんたら資格",
   "children": [
    {
-    "name": "analytics",
+    "name": "なんたら試験A",
     "children": [
      {
-      "name": "cluster",
+      "name": "なんたら試験A-1",
+      "color": "#98abc5",
       "children": [
-       {"name": "AgglomerativeCluster", "size": 3938},
-       {"name": "CommunityStructure", "size": 3812},
-       {"name": "HierarchicalCluster", "size": 6714},
-       {"name": "MergeEdge", "size": 743}
+       {"name": "A-1 詳細１", "size": 3938},
+       {"name": "A-1 詳細２", "size": 3812},
+       {"name": "A-1 詳細３", "size": 6714},
+       {"name": "A-1 詳細４", "size": 743}
       ]
      },
      {
-      "name": "graph",
+      "name": "なんたら試験A-2",
+      "color": "#336600",
       "children": [
-       {"name": "BetweennessCentrality", "size": 3534},
-       {"name": "LinkDistance", "size": 5731},
-       {"name": "MaxFlowMinCut", "size": 7840},
-       {"name": "ShortestPaths", "size": 5914},
-       {"name": "SpanningTree", "size": 3416}
+       {"name": "A-2 詳細１", "size": 3534},
+       {"name": "A-2 詳細２", "size": 5731},
+       {"name": "A-2 詳細３", "size": 7840},
+       {"name": "A-2 詳細４", "size": 5914},
+       {"name": "A-2 詳細５", "size": 3416}
       ]
      }
     ]
    },
    {
-    "name": "display",
+    "name": "なんたら試験B",
+    "color": "#CC0033",
     "children": [
-     {"name": "DirtySprite", "size": 8833},
-     {"name": "LineSprite", "size": 1732},
-     {"name": "RectSprite", "size": 3623},
-     {"name": "TextSprite", "size": 10066}
+     {"name": "B 詳細１", "size": 8833},
+     {"name": "B 詳細２", "size": 1732},
+     {"name": "B 詳細３", "size": 3623},
+     {"name": "B 詳細４", "size": 10066}
     ]
    },
    {
-    "name": "physics",
+    "name": "なんたら試験C",
+    "color": "#6600FF",
     "children": [
-     {"name": "DragForce", "size": 1082},
-     {"name": "GravityForce", "size": 1336},
-     {"name": "IForce", "size": 319},
-     {"name": "NBodyForce", "size": 10498},
-     {"name": "Particle", "size": 2822},
-     {"name": "Simulation", "size": 9983},
-     {"name": "Spring", "size": 2213},
-     {"name": "SpringForce", "size": 1681}
+     {"name": "C 詳細１", "size": 1082},
+     {"name": "C 詳細２", "size": 1336},
+     {"name": "C 詳細３", "size": 9983},
+     {"name": "C 詳細４", "size": 2213},
+     {"name": "C 詳細５", "size": 1681}
     ]
    }
   ]
