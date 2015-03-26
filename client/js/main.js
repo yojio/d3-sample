@@ -29,10 +29,10 @@ define(['bootstrap', 'underscore', 'backbone',
       // data-change btnClick(loop)
       $("#dataChange").on("click", function () {
         var cnt = 0;
-        drawChart(Sample.DATA, Sample.LINE_DATA, Sample.LINE_DATA_MULTI);
+        drawChart();
 
         var timer = setInterval(function () {
-          drawChart(Sample.DATA, Sample.LINE_DATA, Sample.LINE_DATA_MULTI);
+          drawChart();
           cnt += 1;
           if (cnt > 100) {
             clearInterval(timer);
@@ -42,7 +42,7 @@ define(['bootstrap', 'underscore', 'backbone',
 
       // サンプルChart
       me.chartArray = createChart(6);
-      drawChart(Sample.DATA, Sample.LINE_DATA, Sample.LINE_DATA_MULTI);
+      drawChart();
 
       function createChart(chartCount) {
 
@@ -100,39 +100,34 @@ define(['bootstrap', 'underscore', 'backbone',
         }
       }
 
-      function drawChart(data, lineData, lineDataMulti) {
+      function drawChart() {
 
         for (var i = 0; i < me.chartArray.length; i++) {
 
-//          var tmpData = changeData(data);
-          var tmpLData = changeDataForLine(lineData);
-          var tmpLDataM = changeDataForLine(lineDataMulti);
-          var tmpRData = changeDataForRadar(Sample.RADAR_DATA);
-
           if (i % 6 == 0) {
-            me.chartArray[i].draw(Sample.BAR_DATA);
+            me.chartArray[i].draw(changeData(Sample.BAR_DATA,40));
             if (i + 1 < me.chartArray.length) {
-              me.chartArray[i + 1].draw(Sample.BAR_DATA);
+              me.chartArray[i + 1].draw(changeData(Sample.BAR_DATA,40));
             }
             if (i + 2 < me.chartArray.length) {
-              me.chartArray[i + 2].draw(Sample.PIE_DATA);
+              me.chartArray[i + 2].draw(changeData(Sample.PIE_DATA,40));
             }
             if (i + 3 < me.chartArray.length) {
-              me.chartArray[i + 3].draw(tmpLData);
+              me.chartArray[i + 3].draw(changeDataForLine(Sample.LINE_DATA));
             }
             if (i + 4 < me.chartArray.length) {
-              me.chartArray[i + 4].draw(tmpLDataM);
+              me.chartArray[i + 4].draw(changeDataForLine(Sample.LINE_DATA_MULTI));
             }
             if (i + 5 < me.chartArray.length) {
-              me.chartArray[i + 5].draw(tmpRData);
+              me.chartArray[i + 5].draw(changeDataForRadar(Sample.RADAR_DATA));
             }
           }
         }
       }
 
-      function changeData(data) {
+      function changeData(data,range) {
         for (var i = 0; i < data.length; i++) {
-          data[i].value = getRandomInt(0, maxRange);
+          data[i].value = getRandomInt(0, range);
         }
         return data;
       }
@@ -211,7 +206,7 @@ define(['bootstrap', 'underscore', 'backbone',
           };
 
         var treeMap = new TreeMap(option);
-        treeMap.draw(Sample.TREE_DATA);
+        treeMap.draw(Sample.MAP_DATA);
 
         // パーテーション
         var dom = "activePartition";
@@ -220,13 +215,14 @@ define(['bootstrap', 'underscore', 'backbone',
         var option = {
             dom: '#' + dom,
             title: {
-              caption: 'パーテーション'
+              caption: 'パーテーション（クリックで拡大）'
             },
             width: 800,
             height: 800
           };
 
         var activePartition = new ActivePartition(option);
-        activePartition.draw(Sample.TREE_DATA);
+        activePartition.draw(Sample.MAP_DATA);
+        //activePartition.draw(Sample.TEST);
       }
     });
