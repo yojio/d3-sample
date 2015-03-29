@@ -105,7 +105,7 @@ define(['chart/chart'], function () {
           }
         })
         .attr("stroke-dasharray",function(d){
-          if (d.target.strokeDasharray){
+          if (d.target.strokeDasharray != undefined){
             return d.target.strokeDasharray;
           }else{
             return me.opt.stroke.type;

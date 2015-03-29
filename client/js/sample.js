@@ -114,31 +114,31 @@ define([ 'chart/pieChart', 'chart/horizontalBarChart',
         "name" : "なんたら試験A-1",
         "color": "red",
         "strokewidth":2,
-        "strokeDasharray":"0",
+        "strokeDasharray":"",
         "children" : [ {
           "name" : "A-1 詳細１",
           "size" : 3938,
           "color": "red",
           "strokewidth":2,
-          "strokeDasharray":"0"
+          "strokeDasharray":""
         }, {
           "name" : "A-1 詳細２",
           "size" : 3812,
           "color": "red",
           "strokewidth":2,
-          "strokeDasharray":"0"
+          "strokeDasharray":""
         }, {
           "name" : "A-1 詳細３",
           "size" : 6714,
           "color": "red",
           "strokewidth":2,
-          "strokeDasharray":"0"
+          "strokeDasharray":""
         }, {
           "name" : "A-1 詳細４",
           "size" : 743,
           "color": "red",
           "strokewidth":2,
-          "strokeDasharray":"0"
+          "strokeDasharray":""
         } ]
       }, {
         "name" : "なんたら試験A-2",
@@ -156,13 +156,13 @@ define([ 'chart/pieChart', 'chart/horizontalBarChart',
           "size" : 5914,
           "color": "red",
           "strokewidth":2,
-          "strokeDasharray":"0"
+          "strokeDasharray":""
         }, {
           "name" : "A-2 詳細５",
           "size" : 3416,
           "color": "red",
           "strokewidth":2,
-          "strokeDasharray":"0"
+          "strokeDasharray":""
         } ]
       } ]
     }, {
