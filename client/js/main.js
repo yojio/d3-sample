@@ -5,7 +5,7 @@ define(['bootstrap', 'underscore', 'backbone',
         'sample','chart/pieChart', 'chart/horizontalBarChart',
         'chart/varticalBarChart', 'chart/lineChart', 'chart/radarChart'
         ,'chart/normalTree','chart/roundTree','chart/treeMap'
-        ,'chart/activePartition'],
+        ,'chart/activePartition','chart/heatMap'],
     function (bootstrap, _, backbone) {
 
       var maxRange = 500;
@@ -23,6 +23,8 @@ define(['bootstrap', 'underscore', 'backbone',
           createBasicTree();
         } else if (activated_tab.hash == "#menu4") {
           createExtraTree();
+        } else if (activated_tab.hash == "#menu5") {
+          createHeatMap();
         }
       });
 
@@ -224,5 +226,25 @@ define(['bootstrap', 'underscore', 'backbone',
         var activePartition = new ActivePartition(option);
         activePartition.draw(Sample.MAP_DATA);
         //activePartition.draw(Sample.TEST);
+      }
+
+      function createHeatMap(){
+
+        // heatmap
+        var dom = "heatMap";
+        $("#target4").append('<div id=\"' + dom + '\" style=\"float:left\"></div>');
+
+        var option = {
+            dom: '#' + dom,
+            title: {
+              caption: 'Progress 1%',
+              decoration : ""
+            },
+            width: 550,
+            height: 580
+          };
+
+        new HeatMap(option).draw(changeData(Sample.BAR_DATA,40));
+
       }
     });

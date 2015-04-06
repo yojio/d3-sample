@@ -22,7 +22,8 @@ define(['jquery', 'd3'], function () {
         caption: "",
         height: 20,
         fontSize: 16,
-        margin: 10
+        margin: 10,
+        decoration : "underline"
       }
     };
 
@@ -89,7 +90,7 @@ define(['jquery', 'd3'], function () {
         .attr("y", opt.title.height)
         .attr("text-anchor", "middle")
         .style("font-size", opt.title.fontSize + "px")
-        .style("text-decoration", "underline").text(opt.title.caption);
+        .style("text-decoration", opt.title.decoration).text(opt.title.caption);
 
     return opt.title.height + opt.title.margin;
   };
