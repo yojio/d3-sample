@@ -12,3 +12,17 @@
 .chart-class .axis .tick line {
     opacity: 0.2;
 }
+
+.chart-class .axis.heatmap path {
+    fill: none;
+    stroke: none;
+}
+
+.chart-class .axis.heatmap2 path {
+    stroke: #4B75B9;
+}
+
+.chart-class .axis.heatmap2 .tick line {
+    stroke: #4B75B9;
+    opacity: 1;
+}

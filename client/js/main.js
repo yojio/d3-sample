@@ -241,7 +241,7 @@ define(['bootstrap', 'underscore', 'backbone',
                     decoration: ""
                 },
                 width: 550,
-                height: 580
+                height: 480
             };
 
             new HeatMap(option).draw(changeData(Sample.BAR_DATA, 40));

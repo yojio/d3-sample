@@ -10,7 +10,7 @@ define(['chart/chart'], function () {
             axisX: {
                 title: "Level of mastery",
                 category: ["None", "Novice", "Beginner", "Competent", "Proficient", "Expert"], // TODO 初期はから配列に
-                height: 20
+                height: 70
             },
             // 縦軸
             axisY: {
@@ -55,20 +55,18 @@ define(['chart/chart'], function () {
 
                 // グラフ出力サイズ（タイトル・縦ラベル幅を除外）
                 var left = me.opt.axisY.width;
-                var width = me.opt.width - me.opt.axisY.width - me.opt.rightMargin;
+                var width = me.opt.width - me.opt.axisY.width - 50;
                 var top = me._drawTitle(svg, me.opt, (width / 2) + left);
                 var height = this._getHeight(me.opt, top);
                 svg.attr("viewport-fill", "red");
-
-
-                return;
-
 
                 // 縦軸作成
                 me._createAxisY(svg, me.opt, top, left, height, width);
 
                 // 横軸作成
-                me._createAxisX(svg, me.opt, top, left, height, width, data);
+                me._createAxisX(svg, me.opt, top, left, height, width);
+
+                return;
 
                 me.barScale = height / me.opt.axisY.max;   // 比率
                 var barAreaSize = width / data.length;
@@ -138,30 +136,132 @@ define(['chart/chart'], function () {
             value: function _createAxisY(svg, opt, top, left, height, width) {
 
                 var yScale = d3.scale.linear() // スケールを設定
-                    .domain([0, opt.axisY.max]) // 元のサイズ
+                    .domain([0, opt.axisY.category.length * 2]) // 元のサイズ
                     .range([height, 0]);
 
+                var cnt = 0;
+
                 svg.append("g")
-                    .attr("class", "axis")
+                    .attr("class", "axis heatmap")
+                    .style("font-size", "15px")
                     .attr("transform", "translate(" + left + "," + top + ")")
                     .call(d3.svg.axis()
                         .scale(yScale) // スケールを適用する
-                        .orient("left").tickPadding(5)
-                        .tickSize(-width, 0)// 目盛線の長さ（内側,外側）
+                        .tickValues(function () {
+                            return _.range(0, opt.axisY.category.length * 2 + 1);
+                        })
+                        .tickFormat(function (d, i) {
+                            return (d % 2 > 0) ? opt.axisY.category[cnt++] : "";
+                        })
+                        .orient("left")
+                        .tickPadding(5)
+                        .tickSize(0, 0)// 目盛線の長さ（内側,外側）
                 );
+
+                var yScale = d3.scale.linear() // スケールを設定
+                .domain([0, opt.axisY.category.length]) // 元のサイズ
+                .range([height, 0]);
+
+                svg.append("g")
+                .attr("class", "axis heatmap")
+                .style("font-size", "15px")
+                .attr("transform", "translate(" + left + "," + top + ")")
+                .call(d3.svg.axis()
+                    .scale(yScale) // スケールを適用する
+                    .tickValues(function () {
+                        return _.range(0, opt.axisY.category.length + 1);
+                    })
+                    .tickFormat(function (d, i) {
+                        return "";
+                    })
+                    .orient("left")
+                    .tickPadding(5)
+                    .tickSize(-width, 0)// 目盛線の長さ（内側,外側）
+                );
+
+                var data = [60,50,40,30,20,10,0];
+
+                var yScale = d3.scale.linear() // スケールを設定
+                .domain([0, data.length - 1]) // 元のサイズ
+                .range([height, 0]);
+
+                svg.append("g")
+                .attr("class", "axis heatmap")
+                .style("font-size", "15px")
+                .attr("transform", "translate(" + (left + width + 35) + "," + top + ")")
+                .call(d3.svg.axis()
+                    .scale(yScale) // スケールを適用する
+                    .tickValues(function () {
+                        return _.range(0, data.length);
+                    })
+                    .tickFormat(function (d, i) {
+                        return data[d];
+                    })
+                    .orient("right")
+                    .tickPadding(5)
+                    .tickSize(0, 0)// 目盛線の長さ（内側,外側）
+                );
+
+                var text = opt.axisY.title.split("").reverse().join("");
+                var userAgent = window.navigator.userAgent.toLowerCase();
+
+                svg.append("text")
+                .attr("class", "vTitle")
+                .attr("type", "caption")
+                .attr("x", 10)
+                .attr("y", top + 180)
+                .attr("text-anchor", "middle")
+                .style("font-size", "15px")
+                .style("text-decoration", "")
+                .style("writing-mode", "tb")
+                .style("glyph-orientation-vertical", "270")
+                .text(text);
+                // firefoxだとうまくうごかない
+                if (userAgent.indexOf('firefox') != -1) {
+                  var tmp = $(".vTitle");
+                  tmp.css({
+                    'transform': 'rotate(270deg)'
+                  })
+                }
+
+                var gradient = svg.append("svg:defs")
+                .append("svg:linearGradient")
+                  .attr("id", "gradient")
+                  .attr("x1", "0%")
+                  .attr("y1", "0%")
+                  .attr("x2", "0%")
+                  .attr("y2", "100%")
+
+              gradient.append("svg:stop")
+                .attr("offset", "0%")
+                .attr("stop-color", "#FFFFFF")
+                .attr("stop-opacity", 1)
+
+              gradient.append("svg:stop")
+                .attr("offset", "100%")
+                .attr("stop-color", "#4B75B9")
+                .attr("stop-opacity", 1)
+
+              svg.append("rect")
+                .attr("class", "sampleClass")
+                .attr("x", left + width + 10)
+                .attr("y", top)
+                .attr("width", 20)
+                .attr("height", height)
+                .attr("fill", "url(#gradient)")
 
             }
         },
         // 縦軸
         _createAxisX: {
-            value: function (svg, opt, top, left, height, width, data) {
+            value: function (svg, opt, top, left, height, width) {
 
                 // 目盛りを表示するためにスケールを設定
                 var xScale = d3.scale.linear() // スケールを設定
-                    .domain([0, data.length * 2]) // 元のサイズ
-                    .range([0, width]);
+                    .domain([0, opt.axisX.category.length * 2]) // 元のサイズ
+                    .range([0, width - 1]);
 
-                var cnt = 0;
+               var cnt = 0;
 
                 // 目盛りを設定し表示する
                 svg.append("g")
@@ -169,23 +269,48 @@ define(['chart/chart'], function () {
                     .attr("transform", "translate(" + left + ", " + (height + top) + ")")
                     .call(d3.svg.axis().scale(xScale) // スケールを適用する
                         .tickValues(function () {
-                            return _.range(0, data.length * 2);
+                            return _.range(0, opt.axisX.category.length * 2);
                         })
                         .tickFormat(function (d, i) {
-                            return (i % 2 > 0) ? data[cnt++].caption : "";
+                            return (i % 2 > 0) ? opt.axisX.category[cnt++] : "";
                         })
                         .orient("bottom") // 目盛りの表示位置を下側に指定
-                        .tickPadding(7)
+                        .tickPadding(10)
                         .tickSize(0, 0)// 目盛線の長さ（内側,外側）
                 );
 
-                svg.append("line")
-                    .attr("x1", left + width)
-                    .attr("y1", top)
-                    .attr("x2", left + width)
-                    .attr("y2", height + top)
-                    .attr("stroke-width", 0.2)
-                    .attr("stroke", "black");
+                // 目盛りを表示するためにスケールを設定
+                var xScale = d3.scale.linear() // スケールを設定
+                    .domain([0, opt.axisY.category.length]) // 元のサイズ
+                    .range([0, width - 1]);
+
+               var cnt = 0;
+
+                // 目盛りを設定し表示する
+                svg.append("g")
+                    .attr("class", "axis heatmap2")
+                    .attr("transform", "translate(" + left + ", " + (height + top) + ")")
+                    .call(d3.svg.axis().scale(xScale) // スケールを適用する
+                        .tickValues(function () {
+                            return _.range(0, opt.axisY.category.length + 1);
+                        })
+                        .tickFormat(function (d, i) {
+                            return "";
+                        })
+                        .orient("bottom") // 目盛りの表示位置を下側に指定
+                        .tickPadding(7)
+                        .tickSize(5, 0)// 目盛線の長さ（内側,外側）
+                );
+
+                svg.append("text")
+                .attr("class", "hTitle")
+                .attr("type", "caption")
+                .attr("x", left + 225)
+                .attr("y", (height + top) + 50)
+                .attr("text-anchor", "middle")
+                .style("font-size", "15px")
+                .style("text-decoration", "")
+                .text(opt.axisX.title);
 
             }
         }
