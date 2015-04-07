@@ -55,7 +55,7 @@ define(['chart/chart'], function () {
 
                 // グラフ出力サイズ（タイトル・縦ラベル幅を除外）
                 var left = me.opt.axisY.width;
-                var width = me.opt.width - me.opt.axisY.width - 50;
+                var width = me.opt.width - me.opt.axisY.width - 55;
                 var top = me._drawTitle(svg, me.opt, (width / 2) + left);
                 var height = this._getHeight(me.opt, top);
                 svg.attr("viewport-fill", "red");
@@ -188,7 +188,7 @@ define(['chart/chart'], function () {
                 svg.append("g")
                 .attr("class", "axis heatmap")
                 .style("font-size", "15px")
-                .attr("transform", "translate(" + (left + width + 35) + "," + top + ")")
+                .attr("transform", "translate(" + (left + width + 30) + "," + top + ")")
                 .call(d3.svg.axis()
                     .scale(yScale) // スケールを適用する
                     .tickValues(function () {
