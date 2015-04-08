@@ -19,11 +19,11 @@
 }
 
 .chart-class .axis.heatmap2 path {
-    stroke: #4B75B9;
+    stroke: #6EB7DB;
 }
 
 .chart-class .axis.heatmap2 .tick line {
-    stroke: #4B75B9;
+    stroke: #6EB7DB;
     opacity: 1;
 }
 

@@ -23,8 +23,9 @@ define(['chart/chart'], function () {
                 minValue: 0,
                 minColor: "#FFFFFF",
                 maxValue: 60,
-                maxColor: "#4B75B9"
+                maxColor: "#6EB7DB"
             }
+
         };
 
         Chart.call(this, option);
@@ -66,7 +67,7 @@ define(['chart/chart'], function () {
                 // 横軸作成
                 me._createAxisX(svg, me.opt, top, left, height, width);
 
-                var colorScale = d3.scale.linear().domain([0, 60]).range(["#FFFFFF", "#4B75B9"]); //カラースケールを作成
+                var colorScale = d3.scale.linear().domain([0, 60]).range(["#FFFFFF", "#6EB7DB"]); //カラースケールを作成
 
                 var temp = new Array(me.opt.axisX.category.length);
                 for (var i=0;i<me.opt.axisX.category.length;i++){
@@ -105,7 +106,7 @@ define(['chart/chart'], function () {
                     var values = data[key];
                     var value = values[d.y];
                     if (value!=""){
-                      return "#4B75B9";/*colorScale(d)*/
+                      return "#6EB7DB";/*colorScale(d)*/
                     }else{
                       return "none";
                     }
@@ -311,7 +312,7 @@ define(['chart/chart'], function () {
 
               gradient.append("svg:stop")
                 .attr("offset", "100%")
-                .attr("stop-color", "#4B75B9")
+                .attr("stop-color", "#6EB7DB")
                 .attr("stop-opacity", 1)
 
               svg.append("rect")
