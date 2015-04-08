@@ -70,12 +70,12 @@ define(['chart/chart'], function () {
                 var colorScale = d3.scale.linear().domain([0, 60]).range(["#FFFFFF", "#6EB7DB"]); //カラースケールを作成
 
                 var temp = new Array(me.opt.axisX.category.length);
-                for (var i=0;i<me.opt.axisX.category.length;i++){
-                  temp[i] = new Array(me.opt.axisY.category.length);
+                for (var i = 0; i < me.opt.axisX.category.length; i++) {
+                    temp[i] = new Array(me.opt.axisY.category.length);
 
-                  for (var k=0;k<me.opt.axisY.category.length;k++){
-                    temp[i][k] = {x:i,y:k};
-                  }
+                    for (var k = 0; k < me.opt.axisY.category.length; k++) {
+                        temp[i][k] = {x: i, y: k};
+                    }
                 }
 //                var temp = new Array(2);
 //                for (var i=0;i<2;i++){
@@ -86,50 +86,51 @@ define(['chart/chart'], function () {
 //                  }
 //                }
                 temp = d3.merge(temp);
-                temp.splice(0, 0, {x:-1,y:-1});
+                temp.splice(0, 0, {x: -1, y: -1});
 
                 var boxSize = {
-                    width:width / me.opt.axisX.category.length
-                    ,height:height / me.opt.axisY.category.length
+                    width: width / me.opt.axisX.category.length
+                    , height: height / me.opt.axisY.category.length
                 };
 
                 var rect = svg.selectAll("rect")
-                .data(temp)
-                .enter()
-                .append("g");
+                    .data(temp)
+                    .enter()
+                    .append("g");
 
                 rect.append("rect") // SVGでの四角形を示す要素を生成
-                .attr("transform", "translate(" + (left) + ", " + (top + height) + ")")
-                .attr("stroke",function(d,i){
-                    var index = d.x;
-                    var key = me.opt.axisX.category[index];
-                    var values = data[key];
-                    var value = values[d.y];
-                    if (value!=""){
-                      return "#6EB7DB";/*colorScale(d)*/
-                    }else{
-                      return "none";
-                    }
-                })
-                .attr("fill",function(d,i){
-                    var index = d.x;
-                    var key = me.opt.axisX.category[index];
-                    var values = data[key];
-                    var value = values[d.y];
-                    if (value!=""){
-                      return colorScale(value);
-                    }else{
-                      return "none";
-                    }
-                })
-                  .attr("x", function (d, i) {
+                    .attr("transform", "translate(" + (left) + ", " + (top + height) + ")")
+                    .attr("stroke", function (d, i) {
+                        var index = d.x;
+                        var key = me.opt.axisX.category[index];
+                        var values = data[key];
+                        var value = values[d.y];
+                        if (value != "") {
+                            return "#6EB7DB";
+                            /*colorScale(d)*/
+                        } else {
+                            return "none";
+                        }
+                    })
+                    .attr("fill", function (d, i) {
+                        var index = d.x;
+                        var key = me.opt.axisX.category[index];
+                        var values = data[key];
+                        var value = values[d.y];
+                        if (value != "") {
+                            return colorScale(value);
+                        } else {
+                            return "none";
+                        }
+                    })
+                    .attr("x", function (d, i) {
                         return (boxSize.width * d.x);
                     })
                     .attr("y", function (d) {
-                      return - (boxSize.height + (boxSize.height * d.y));
+                        return -(boxSize.height + (boxSize.height * d.y));
                     })
                     .attr("width", boxSize.width)
-                    .attr("height",boxSize.height)
+                    .attr("height", boxSize.height)
                 ;
 
                 // データキャプション表示
@@ -137,27 +138,27 @@ define(['chart/chart'], function () {
                     .attr("class", "dataCaption")
                     .attr("transform", "translate(" + (left - 1) + ", " + (top + height) + ")")
                     .attr("dx", function (d, i) {
-                      if (d.x <= 0){
-                        return boxSize.width / 2;
-                      }else{
-                        return (boxSize.width * d.x) + (boxSize.width / 2);
-                      }
+                        if (d.x <= 0) {
+                            return boxSize.width / 2;
+                        } else {
+                            return (boxSize.width * d.x) + (boxSize.width / 2);
+                        }
                     })
                     .attr("dy", function (d) {
-                      if (d.y <= 0){
-                        return -(boxSize.height / 2);
-                      }else{
-                        return -((boxSize.height * d.y) + boxSize.height / 2);
-                      }
+                        if (d.y <= 0) {
+                            return -(boxSize.height / 2);
+                        } else {
+                            return -((boxSize.height * d.y) + boxSize.height / 2);
+                        }
                     })
-                    .attr("dominant-baseline","central")
+                    .attr("dominant-baseline", "central")
                     .style("text-anchor", "middle")
                     .text(function (d) {
-                      var index = d.x;
-                      var key = me.opt.axisX.category[index];
-                      var values = data[key];
-                      var value = values[d.y];
-                      return value;
+                        var index = d.x;
+                        var key = me.opt.axisX.category[index];
+                        var values = data[key];
+                        var value = values[d.y];
+                        return value;
                     });
 
                 // データキャプション表示
@@ -165,37 +166,37 @@ define(['chart/chart'], function () {
                     .attr("class", "heatmaprectsign")
                     .attr("transform", "translate(" + (left - 1) + ", " + (top + height) + ")")
                     .attr("dx", function (d, i) {
-                      if (d.x <= 0){
-                        return boxSize.width / 2;
-                      }else{
-                        return (boxSize.width * d.x) + (boxSize.width / 2);
-                      }
+                        if (d.x <= 0) {
+                            return boxSize.width / 2;
+                        } else {
+                            return (boxSize.width * d.x) + (boxSize.width / 2);
+                        }
                     })
                     .attr("dy", function (d) {
-                      if (d.y <= 0){
-                        return 0;
-                      }else{
-                        return -(boxSize.height * d.y);
-                      }
+                        if (d.y <= 0) {
+                            return 0;
+                        } else {
+                            return -(boxSize.height * d.y);
+                        }
                     })
-                    .attr("dominant-baseline","text-before-edge")
+                    .attr("dominant-baseline", "text-before-edge")
                     .style("text-anchor", "middle")
                     .text(function (d) {
-                      var index = d.x;
-                      var key = me.opt.axisX.category[index];
-                      var values = data[key];
-                      var value = values[d.y];
-                      if (value!=""){
-                        return "^";
-                      }else{
-                        return "";
-                      }
+                        var index = d.x;
+                        var key = me.opt.axisX.category[index];
+                        var values = data[key];
+                        var value = values[d.y];
+                        if (value != "") {
+                            return "^";
+                        } else {
+                            return "";
+                        }
                     });
             }
         },
         _redraw: {
             value: function (data) {
-              this._create(data);
+                this._create(data);
             }
         },
         // 高さ取得
@@ -232,96 +233,96 @@ define(['chart/chart'], function () {
                 );
 
                 var yScale = d3.scale.linear() // スケールを設定
-                .domain([0, opt.axisY.category.length]) // 元のサイズ
-                .range([height, 0]);
+                    .domain([0, opt.axisY.category.length]) // 元のサイズ
+                    .range([height, 0]);
 
                 svg.append("g")
-                .attr("class", "axis heatmap")
-                .style("font-size", "15px")
-                .attr("transform", "translate(" + left + "," + top + ")")
-                .call(d3.svg.axis()
-                    .scale(yScale) // スケールを適用する
-                    .tickValues(function () {
-                        return _.range(0, opt.axisY.category.length + 1);
-                    })
-                    .tickFormat(function (d, i) {
-                        return "";
-                    })
-                    .orient("left")
-                    .tickPadding(5)
-                    .tickSize(-width, 0)// 目盛線の長さ（内側,外側）
+                    .attr("class", "axis heatmap")
+                    .style("font-size", "15px")
+                    .attr("transform", "translate(" + left + "," + top + ")")
+                    .call(d3.svg.axis()
+                        .scale(yScale) // スケールを適用する
+                        .tickValues(function () {
+                            return _.range(0, opt.axisY.category.length + 1);
+                        })
+                        .tickFormat(function (d, i) {
+                            return "";
+                        })
+                        .orient("left")
+                        .tickPadding(5)
+                        .tickSize(-width, 0)// 目盛線の長さ（内側,外側）
                 );
 
-                var data = [60,50,40,30,20,10,0];
+                var data = [60, 50, 40, 30, 20, 10, 0];
 
                 var yScale = d3.scale.linear() // スケールを設定
-                .domain([0, data.length - 1]) // 元のサイズ
-                .range([height, 0]);
+                    .domain([0, data.length - 1]) // 元のサイズ
+                    .range([height, 0]);
 
                 svg.append("g")
-                .attr("class", "axis heatmap")
-                .style("font-size", "15px")
-                .attr("transform", "translate(" + (left + width + 30) + "," + top + ")")
-                .call(d3.svg.axis()
-                    .scale(yScale) // スケールを適用する
-                    .tickValues(function () {
-                        return _.range(0, data.length);
-                    })
-                    .tickFormat(function (d, i) {
-                        return data[d];
-                    })
-                    .orient("right")
-                    .tickPadding(5)
-                    .tickSize(0, 0)// 目盛線の長さ（内側,外側）
+                    .attr("class", "axis heatmap")
+                    .style("font-size", "15px")
+                    .attr("transform", "translate(" + (left + width + 30) + "," + top + ")")
+                    .call(d3.svg.axis()
+                        .scale(yScale) // スケールを適用する
+                        .tickValues(function () {
+                            return _.range(0, data.length);
+                        })
+                        .tickFormat(function (d, i) {
+                            return data[d];
+                        })
+                        .orient("right")
+                        .tickPadding(5)
+                        .tickSize(0, 0)// 目盛線の長さ（内側,外側）
                 );
 
                 var text = opt.axisY.title.split("").reverse().join("");
                 var userAgent = window.navigator.userAgent.toLowerCase();
 
                 svg.append("text")
-                .attr("class", "vTitle")
-                .attr("type", "caption")
-                .attr("x", 10)
-                .attr("y", top + 180)
-                .attr("text-anchor", "middle")
-                .style("font-size", "15px")
-                .style("text-decoration", "")
-                .style("writing-mode", "tb")
-                .style("glyph-orientation-vertical", "270")
-                .text(text);
+                    .attr("class", "vTitle")
+                    .attr("type", "caption")
+                    .attr("x", 10)
+                    .attr("y", top + 180)
+                    .attr("text-anchor", "middle")
+                    .style("font-size", "15px")
+                    .style("text-decoration", "")
+                    .style("writing-mode", "tb")
+                    .style("glyph-orientation-vertical", "270")
+                    .text(text);
                 // firefoxだとうまくうごかない
                 if (userAgent.indexOf('firefox') != -1) {
-                  var tmp = $(".vTitle");
-                  tmp.css({
-                    'transform': 'rotate(270deg)'
-                  })
+                    var tmp = $(".vTitle");
+                    tmp.css({
+                        'transform': 'rotate(270deg)'
+                    })
                 }
 
                 var gradient = svg.append("svg:defs")
-                .append("svg:linearGradient")
-                  .attr("id", "gradient")
-                  .attr("x1", "0%")
-                  .attr("y1", "0%")
-                  .attr("x2", "0%")
-                  .attr("y2", "100%")
+                    .append("svg:linearGradient")
+                    .attr("id", "gradient")
+                    .attr("x1", "0%")
+                    .attr("y1", "0%")
+                    .attr("x2", "0%")
+                    .attr("y2", "100%")
 
-              gradient.append("svg:stop")
-                .attr("offset", "0%")
-                .attr("stop-color", "#FFFFFF")
-                .attr("stop-opacity", 1)
+                gradient.append("svg:stop")
+                    .attr("offset", "0%")
+                    .attr("stop-color", "#FFFFFF")
+                    .attr("stop-opacity", 1)
 
-              gradient.append("svg:stop")
-                .attr("offset", "100%")
-                .attr("stop-color", "#6EB7DB")
-                .attr("stop-opacity", 1)
+                gradient.append("svg:stop")
+                    .attr("offset", "100%")
+                    .attr("stop-color", "#6EB7DB")
+                    .attr("stop-opacity", 1)
 
-              svg.append("rect")
-                .attr("class", "sampleClass")
-                .attr("x", left + width + 10)
-                .attr("y", top)
-                .attr("width", 20)
-                .attr("height", height)
-                .attr("fill", "url(#gradient)")
+                svg.append("rect")
+                    .attr("class", "sampleClass")
+                    .attr("x", left + width + 10)
+                    .attr("y", top)
+                    .attr("width", 20)
+                    .attr("height", height)
+                    .attr("fill", "url(#gradient)")
 
             }
         },
@@ -334,7 +335,7 @@ define(['chart/chart'], function () {
                     .domain([0, opt.axisX.category.length * 2]) // 元のサイズ
                     .range([0, width]);
 
-               var cnt = 0;
+                var cnt = 0;
 
                 // 目盛りを設定し表示する
                 svg.append("g")
@@ -357,7 +358,7 @@ define(['chart/chart'], function () {
                     .domain([0, opt.axisX.category.length]) // 元のサイズ
                     .range([0, width]);
 
-               var cnt = 0;
+                var cnt = 0;
 
                 // 目盛りを設定し表示する
                 svg.append("g")
@@ -376,14 +377,14 @@ define(['chart/chart'], function () {
                 );
 
                 svg.append("text")
-                .attr("class", "hTitle")
-                .attr("type", "caption")
-                .attr("x", left + 225)
-                .attr("y", (height + top) + 50)
-                .attr("text-anchor", "middle")
-                .style("font-size", "15px")
-                .style("text-decoration", "")
-                .text(opt.axisX.title);
+                    .attr("class", "hTitle")
+                    .attr("type", "caption")
+                    .attr("x", left + 225)
+                    .attr("y", (height + top) + 50)
+                    .attr("text-anchor", "middle")
+                    .style("font-size", "15px")
+                    .style("text-decoration", "")
+                    .text(opt.axisX.title);
 
             }
         }
