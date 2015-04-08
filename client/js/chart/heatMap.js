@@ -66,63 +66,135 @@ define(['chart/chart'], function () {
                 // 横軸作成
                 me._createAxisX(svg, me.opt, top, left, height, width);
 
-                return;
+                var colorScale = d3.scale.linear().domain([0, 60]).range(["#FFFFFF", "#4B75B9"]); //カラースケールを作成
 
-                me.barScale = height / me.opt.axisY.max;   // 比率
-                var barAreaSize = width / data.length;
-                var barSize = barAreaSize * (0.8 * me.opt.barWeight);  // 棒グラフの縦幅
+                var temp = new Array(me.opt.axisX.category.length);
+                for (var i=0;i<me.opt.axisX.category.length;i++){
+                  temp[i] = new Array(me.opt.axisY.category.length);
 
-                svg.selectAll("rect")   // SVGでの四角形を示す要素を指定
-                    .data(data) // データを設定
-                    .enter()
-                    .append("rect") // SVGでの四角形を示す要素を生成
-                    .attr("stroke", function (d, i) {
-                        return d.color;
-                    })
-                    .attr("x", function (d, i) {
-                        return left + (i * barAreaSize) + ((barAreaSize - barSize) / 2);
+                  for (var k=0;k<me.opt.axisY.category.length;k++){
+                    temp[i][k] = {x:i,y:k};
+                  }
+                }
+//                var temp = new Array(2);
+//                for (var i=0;i<2;i++){
+//                  temp[i] = new Array(2);
+//
+//                  for (var k=0;k<2;k++){
+//                    temp[i][k] = {x:i,y:k};
+//                  }
+//                }
+                temp = d3.merge(temp);
+                temp.splice(0, 0, {x:-1,y:-1});
+
+                var boxSize = {
+                    width:width / me.opt.axisX.category.length
+                    ,height:height / me.opt.axisY.category.length
+                };
+
+                var rect = svg.selectAll("rect")
+                .data(temp)
+                .enter()
+                .append("g");
+
+                rect.append("rect") // SVGでの四角形を示す要素を生成
+                .attr("transform", "translate(" + (left) + ", " + (top + height) + ")")
+                .attr("stroke",function(d,i){
+                    var index = d.x;
+                    var key = me.opt.axisX.category[index];
+                    var values = data[key];
+                    var value = values[d.y];
+                    if (value!=""){
+                      return "#4B75B9";/*colorScale(d)*/
+                    }else{
+                      return "none";
+                    }
+                })
+                .attr("fill",function(d,i){
+                    var index = d.x;
+                    var key = me.opt.axisX.category[index];
+                    var values = data[key];
+                    var value = values[d.y];
+                    if (value!=""){
+                      return colorScale(value);
+                    }else{
+                      return "none";
+                    }
+                })
+                  .attr("x", function (d, i) {
+                        return (boxSize.width * d.x);
                     })
                     .attr("y", function (d) {
-                        var value = ((height + top) - (d.value * me.barScale));
-                        return ((value >= 0) ? value : 0) + "px";
+                      return - (boxSize.height + (boxSize.height * d.y));
                     })
-                    .attr("width", barSize)
-                    .attr("height", function (d) {
-                        var value = (d.value * me.barScale) - 1;
-                        return ((value >= 0) ? value : 0) + "px";
+                    .attr("width", boxSize.width)
+                    .attr("height",boxSize.height)
+                ;
+
+                // データキャプション表示
+                rect.append("text")
+                    .attr("class", "dataCaption")
+                    .attr("transform", "translate(" + (left - 1) + ", " + (top + height) + ")")
+                    .attr("dx", function (d, i) {
+                      if (d.x <= 0){
+                        return boxSize.width / 2;
+                      }else{
+                        return (boxSize.width * d.x) + (boxSize.width / 2);
+                      }
                     })
-                    .attr("transform", "translate(0, 0)")
-                    .style("fill", function (d, i) {
-                        return d.color;
+                    .attr("dy", function (d) {
+                      if (d.y <= 0){
+                        return -(boxSize.height / 2);
+                      }else{
+                        return -((boxSize.height * d.y) + boxSize.height / 2);
+                      }
+                    })
+                    .attr("dominant-baseline","central")
+                    .style("text-anchor", "middle")
+                    .text(function (d) {
+                      var index = d.x;
+                      var key = me.opt.axisX.category[index];
+                      var values = data[key];
+                      var value = values[d.y];
+                      return value;
                     });
 
-                me.svg = svg;
-                me.top = top;
-                me.height = height;
+                // データキャプション表示
+                rect.append("text")
+                    .attr("class", "heatmaprectsign")
+                    .attr("transform", "translate(" + (left - 1) + ", " + (top + height) + ")")
+                    .attr("dx", function (d, i) {
+                      if (d.x <= 0){
+                        return boxSize.width / 2;
+                      }else{
+                        return (boxSize.width * d.x) + (boxSize.width / 2);
+                      }
+                    })
+                    .attr("dy", function (d) {
+                      if (d.y <= 0){
+                        return 0;
+                      }else{
+                        return -(boxSize.height * d.y);
+                      }
+                    })
+                    .attr("dominant-baseline","text-before-edge")
+                    .style("text-anchor", "middle")
+                    .text(function (d) {
+                      var index = d.x;
+                      var key = me.opt.axisX.category[index];
+                      var values = data[key];
+                      var value = values[d.y];
+                      if (value!=""){
+                        return "^";
+                      }else{
+                        return "";
+                      }
+                    });
             }
         },
         _redraw: {
             value: function (data) {
-
-                var me = this;
-                var svg = me.svg;
-                var top = me.top;
-                var height = me.height;
-
-                // データを更新する処理
-                svg.selectAll("rect")   // SVGでの四角形を示す要素を指定
-                    .data(data) // データを設定
-                    .transition()
-                    .duration(800) // 動作時間
-                    .attr("y", function (d) {
-                        var value = ((height + top) - (d.value * me.barScale));
-                        return ((value >= 0) ? value : 0) + "px";
-                    })
-                    .attr("height", function (d) {
-                        var value = (d.value * me.barScale) - 1;
-                        return ((value >= 0) ? value : 0) + "px";
-                    })
-
+              this._create(data);
             }
         },
         // 高さ取得
@@ -259,7 +331,7 @@ define(['chart/chart'], function () {
                 // 目盛りを表示するためにスケールを設定
                 var xScale = d3.scale.linear() // スケールを設定
                     .domain([0, opt.axisX.category.length * 2]) // 元のサイズ
-                    .range([0, width - 1]);
+                    .range([0, width]);
 
                var cnt = 0;
 
@@ -281,8 +353,8 @@ define(['chart/chart'], function () {
 
                 // 目盛りを表示するためにスケールを設定
                 var xScale = d3.scale.linear() // スケールを設定
-                    .domain([0, opt.axisY.category.length]) // 元のサイズ
-                    .range([0, width - 1]);
+                    .domain([0, opt.axisX.category.length]) // 元のサイズ
+                    .range([0, width]);
 
                var cnt = 0;
 

@@ -244,7 +244,7 @@ define(['bootstrap', 'underscore', 'backbone',
                 height: 480
             };
 
-            new HeatMap(option).draw(changeData(Sample.BAR_DATA, 40));
+            new HeatMap(option).draw(Sample.HEATMAP_DATA);
 
         }
     });
