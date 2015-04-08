@@ -99,12 +99,23 @@ define(['chart/chart'], function () {
                     .append("g");
 
                 rect.append("rect") // SVGでの四角形を示す要素を生成
+                    .attr("class", "databox")
                     .attr("transform", "translate(" + (left) + ", " + (top + height) + ")")
+                    .attr("x", function (d, i) {
+                        return (boxSize.width * d.x);
+                    })
+                    .attr("y", function (d) {
+                        return -(boxSize.height + (boxSize.height * d.y));
+                    })
+                    .attr("width", boxSize.width)
+                    .attr("height", boxSize.height)
+                    //.transition()
+                    //.duration(800)
                     .attr("stroke", function (d, i) {
                         var index = d.x;
                         var key = me.opt.axisX.category[index];
                         var values = data[key];
-                        var value = values[d.y];
+                        var value = values[d.y] + '';
                         if (value != "") {
                             return "#6EB7DB";
                             /*colorScale(d)*/
@@ -116,21 +127,13 @@ define(['chart/chart'], function () {
                         var index = d.x;
                         var key = me.opt.axisX.category[index];
                         var values = data[key];
-                        var value = values[d.y];
+                        var value = values[d.y] + '';
                         if (value != "") {
                             return colorScale(value);
                         } else {
                             return "none";
                         }
                     })
-                    .attr("x", function (d, i) {
-                        return (boxSize.width * d.x);
-                    })
-                    .attr("y", function (d) {
-                        return -(boxSize.height + (boxSize.height * d.y));
-                    })
-                    .attr("width", boxSize.width)
-                    .attr("height", boxSize.height)
                 ;
 
                 // データキャプション表示
@@ -192,11 +195,96 @@ define(['chart/chart'], function () {
                             return "";
                         }
                     });
+
+                me.svg = svg;
+                me.rect = rect;
+                me.width = width;
+                me.height = height;
+
             }
         },
         _redraw: {
             value: function (data) {
-                this._create(data);
+
+                var me = this;
+                var svg = me.svg;
+                var rect = me.rect;
+
+                var width = me.width;
+                var height = me.height;
+                var boxSize = {
+                    width: width / me.opt.axisX.category.length
+                    , height: height / me.opt.axisY.category.length
+                };
+
+                var colorScale = d3.scale.linear().domain([0, 60]).range(["#FFFFFF", "#6EB7DB"]); //カラースケールを作成
+
+                var temp = new Array(me.opt.axisX.category.length);
+                for (var i = 0; i < me.opt.axisX.category.length; i++) {
+                    temp[i] = new Array(me.opt.axisY.category.length);
+
+                    for (var k = 0; k < me.opt.axisY.category.length; k++) {
+                        temp[i][k] = {x: i, y: k};
+                    }
+                }
+                temp = d3.merge(temp);
+                //temp.splice(0, 0, {x: -1, y: -1});
+
+                svg.selectAll(".databox").data(temp)
+                    .transition()
+                    .duration(800)
+                    .attr("stroke", function (d, i) {
+                        var index = d.x;
+                        var key = me.opt.axisX.category[index];
+                        var values = data[key];
+                        var value = values[d.y] + '';
+                        if (value != "") {
+                            return "#6EB7DB";
+                            /*colorScale(d)*/
+                        } else {
+                            return "none";
+                        }
+                    })
+                    .attr("fill", function (d, i) {
+                        var index = d.x;
+                        var key = me.opt.axisX.category[index];
+                        var values = data[key];
+                        var value = values[d.y] + '';
+                        if (value != "") {
+                            return colorScale(value);
+                        } else {
+                            return "none";
+                        }
+                    });
+
+                // データキャプション表示
+                rect.selectAll(".dataCaption")
+                    .transition()
+                    .duration(800)
+                    .attr("dx", function (d, i) {
+                        if (d.x <= 0) {
+                            return boxSize.width / 2;
+                        } else {
+                            return (boxSize.width * d.x) + (boxSize.width / 2);
+                        }
+                    })
+                    .attr("dy", function (d) {
+                        if (d.y <= 0) {
+                            return -(boxSize.height / 2);
+                        } else {
+                            return -((boxSize.height * d.y) + boxSize.height / 2);
+                        }
+                    })
+                    .text(function (d) {
+                        var index = d.x;
+                        var key = me.opt.axisX.category[index];
+                        var values = data[key];
+                        var value = values[d.y];
+                        return value;
+                    });
+
+
+                //this._create(data);
             }
         },
         // 高さ取得

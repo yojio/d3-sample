@@ -7,7 +7,6 @@ define(['bootstrap', 'underscore', 'backbone',
         , 'chart/normalTree', 'chart/roundTree', 'chart/treeMap'
         , 'chart/activePartition', 'chart/heatMap'],
     function (bootstrap, _, backbone) {
-
         var maxRange = 500;
         var me = this;
 
@@ -40,6 +39,13 @@ define(['bootstrap', 'underscore', 'backbone',
                     clearInterval(timer);
                 }
             }, 3000);
+        });
+
+        // data-change btnClick(loop)
+        $("#dataChangeHeat").on("click", function () {
+            if (me.heatmap) {
+                me.heatmap.draw(changeDataForHeatMap(Sample.HEATMAP_DATA, 60));
+            }
         });
 
         // サンプルChart
@@ -244,7 +250,23 @@ define(['bootstrap', 'underscore', 'backbone',
                 height: 480
             };
 
-            new HeatMap(option).draw(Sample.HEATMAP_DATA);
+            if (!me.heatmap) {
+                me.heatmap = new HeatMap(option);
+            }
+            me.heatmap.draw(changeDataForHeatMap(Sample.HEATMAP_DATA, 60));
 
         }
+
+        function changeDataForHeatMap(data, maxRange) {
+            for (var key in data) {
+                for (var i = 0; i < data[key].length; i++) {
+                    if (data[key][i] + "" != "") {
+                        data[key][i] = getRandomInt(0, maxRange);
+                    }
+                }
+            }
+            return data;
+        }
+
+
     });
