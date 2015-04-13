@@ -186,6 +186,8 @@ define(['chart/chart'], function () {
                     .data(me.opt.category)
                     .enter()
                     .append('text')
+                    .style("font-family", "sans-serif")
+                    .style("font-size", "14px")
                     .text(function (d, i) {
                         return d;
                     })

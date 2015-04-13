@@ -137,7 +137,7 @@ define(['chart/chart'], function () {
                     .domain([0, opt.axisY.max]) // 元のサイズ
                     .range([height, 0]);
 
-                svg.append("g")
+                var tmp = svg.append("g")
                     .attr("class", "axis")
                     .attr("transform", "translate(" + left + "," + top + ")")
                     .call(d3.svg.axis()
@@ -146,6 +146,21 @@ define(['chart/chart'], function () {
                         .tickSize(-width, 0)// 目盛線の長さ（内側,外側）
                 );
 
+                tmp.selectAll("path")
+                .style("fill", "none")
+                .style("stroke", "black");
+
+
+                tmp.selectAll("line")
+                .style("fill", "none")
+                .style("stroke", "black");
+
+                tmp.selectAll(".tick line")
+                .style("opacity", "0.2");
+
+                tmp.selectAll("text")
+                .style("font-family", "sans-serif")
+                .style("font-size", "11px")
             }
         },
         // 縦軸
@@ -160,7 +175,7 @@ define(['chart/chart'], function () {
                 var cnt = 0;
 
                 // 目盛りを設定し表示する
-                svg.append("g")
+                var tmp = svg.append("g")
                     .attr("class", "axis")
                     .attr("transform", "translate(" + left + ", " + (height + top) + ")")
                     .call(d3.svg.axis().scale(xScale) // スケールを適用する
@@ -183,6 +198,21 @@ define(['chart/chart'], function () {
                     .attr("stroke-width", 0.2)
                     .attr("stroke", "black");
 
+                tmp.selectAll("path")
+                .style("fill", "none")
+                .style("stroke", "black");
+
+
+                tmp.selectAll("line")
+                .style("fill", "none")
+                .style("stroke", "black");
+
+                tmp.selectAll(".tick line")
+                .style("opacity", "0.2");
+
+                tmp.selectAll("text")
+                .style("font-family", "sans-serif")
+                .style("font-size", "11px")
             }
         }
     });

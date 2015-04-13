@@ -127,7 +127,7 @@ define(['chart/chart'], function () {
 
                 var cnt = 0;
 
-                svg.append("g")
+                var tmp = svg.append("g")
                     .attr("class", "axis")
                     .attr("transform", "translate(" + left + ", " + top + ")")
                     .call(d3.svg.axis()
@@ -142,6 +142,22 @@ define(['chart/chart'], function () {
                         .tickPadding(5)
                         .tickSize(0, 0)// 目盛線の長さ（内側,外側）
                 );
+
+                tmp.selectAll("text")
+                .style("font-family", "sans-serif")
+                .style("font-size", "11px")
+
+                tmp.selectAll("path")
+                .style("fill", "none")
+                .style("stroke", "black");
+
+
+                tmp.selectAll("line")
+                .style("fill", "none")
+                .style("stroke", "black");
+
+                tmp.selectAll(".tick line")
+                .style("opacity", "0.2");
 
                 svg.append("line")
                     .attr("x1", left)
@@ -163,7 +179,7 @@ define(['chart/chart'], function () {
                     .range([0, width]);
 
                 // 目盛りを設定し表示する
-                svg.append("g")
+                var tmp = svg.append("g")
                     .attr("class", "axis")
                     .attr("transform", "translate(" + left + ", " + (height + top) + ")")
                     .call(d3.svg.axis()
@@ -173,6 +189,23 @@ define(['chart/chart'], function () {
                         .tickSize(0.2)
                         .tickSize(-(height), 0)// 目盛線の長さ（内側,外側）
                 );
+
+                tmp.selectAll("text")
+                .style("font-family", "sans-serif")
+                .style("font-size", "11px")
+
+                tmp.selectAll("path")
+                .style("fill", "none")
+                .style("stroke", "black");
+
+
+                tmp.selectAll("line")
+                .style("fill", "none")
+                .style("stroke", "black");
+
+                tmp.selectAll(".tick line")
+                .style("opacity", "0.2");
+
 
             }
         }

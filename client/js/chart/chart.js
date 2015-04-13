@@ -89,6 +89,7 @@ define(['jquery', 'd3'], function () {
             .attr("x", left)
             .attr("y", opt.title.height)
             .attr("text-anchor", "middle")
+            .style("font-family", "sans-serif")
             .style("font-size", opt.title.fontSize + "px")
             .style("text-decoration", opt.title.decoration).text(opt.title.caption);
 
